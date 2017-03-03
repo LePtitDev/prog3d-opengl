@@ -16,6 +16,8 @@ public:
     Vecteur(double, double, double);
     Vecteur(const Vecteur&);
 
+    static Vecteur VectorByPoints(const Point&, const Point&);
+
     double GetNorm() const;
     double GetScalar(const Vecteur&) const;
     double GetAngle(const Vecteur&) const;

@@ -10,9 +10,11 @@
 
 class TP6Exo1 : public Exercice {
 
+    Lumiere lumiere;
     Camera camera;
 
-    Mesh mesh;
+    int mesh;
+    Mesh buddha, bunny, max, triceratops;
 
 public:
 

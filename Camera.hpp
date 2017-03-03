@@ -8,11 +8,17 @@
 
 class Camera {
 
+private:
+
+    static double fovy, aspect, zNear, zFar;
+
 public:
 
     static const double zoom_speed;
 
     static const double rotation_speed;
+
+    static void Perspective(double, double, double, double);
 
 private:
 

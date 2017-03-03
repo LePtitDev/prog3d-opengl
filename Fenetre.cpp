@@ -11,6 +11,7 @@ Fenetre& Fenetre::Actual() {
     return *Fenetre::actual;
 }
 
+
 Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv[]) {
     Fenetre::actual = this;
 
@@ -34,7 +35,7 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     glutInitWindowPosition(100, 100);
 
     // Crée une fenêtre avec le nom entré en paramètres
-    this->id = glutCreateWindow("OpenGL - TP 1");
+    this->id = glutCreateWindow(name);
 
     // Assigne le callback de rendu
     glutDisplayFunc(Fenetre::OnDisplay);
@@ -103,6 +104,14 @@ Fenetre::~Fenetre() {
     glutDestroyWindow(this->id);
 }
 
+int Fenetre::GetWidth() const {
+    return this->win_width;
+}
+
+int Fenetre::GetHeight() const {
+    return this->win_height;
+}
+
 void Fenetre::Execute() {
     // Lance la boucle interne de GLUT
     glutMainLoop();
@@ -130,7 +139,7 @@ void Fenetre::initPerspective() {
     glLoadIdentity();
 
     // On initialise la caméra en perspective
-    gluPerspective(45.0, (double)win_width / (double)win_height, 1.0, 1000.0);
+    Camera::Perspective(45.0, (double)win_width / (double)win_height, 1.0, 1000.0);
 
     // Spécifie quelle matrice est la matrice actuelle : Modèle de vue
     glMatrixMode(GL_MODELVIEW);
@@ -172,7 +181,7 @@ void Fenetre::OnReshape(int width, int height) {
     }
     else {
         // On initialise la caméra en perspective
-        gluPerspective(45.0, (double)width / (double)height, 1.0, 1000.0);
+        Camera::Perspective(45.0, (double)width / (double)height, 1.0, 1000.0);
     }
 
     // Spécifie quelle matrice est la matrice actuelle : Modèle de vue

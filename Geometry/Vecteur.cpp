@@ -18,6 +18,10 @@ Vecteur::Vecteur(const Vecteur & v) :
 
 }
 
+Vecteur Vecteur::VectorByPoints(const Point & p1, const Point & p2) {
+    return Vecteur(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+}
+
 double Vecteur::GetScalar(const Vecteur & v) const {
     return (this->x * v.x + this->y * v.y + this->z * v.z);
 }

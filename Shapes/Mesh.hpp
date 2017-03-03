@@ -17,6 +17,7 @@ typedef struct {
 class Mesh {
 
     std::vector<Point> P;
+    std::vector<Vecteur> N;
     std::vector<basic_meshtriangle> T;
     std::vector<basic_mesharete> A;
 
@@ -32,7 +33,27 @@ public:
     void PushPoint(const Point&);
     void PushTriangle(unsigned int, unsigned int, unsigned int);
 
+    void Normalize();
+
+    void Translate(double, double, double);
+    void RotateX(double);
+    void RotateY(double);
+    void RotateZ(double);
+    void Scale(double, double, double);
+
     void Draw() const;
+    void DrawNormals() const;
+
+    Point& operator[](unsigned int);
+
+private:
+
+    static bool is_smooth;
+
+public:
+
+    static void EnableSmooth();
+    static void DisableSmooth();
 
 };
 

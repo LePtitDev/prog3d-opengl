@@ -47,6 +47,7 @@ class Camera;
 #include "Files/OFF.hpp"
 
 //CAMERA
+#include "Lumiere.hpp"
 #include "Camera.hpp"
 
 //EXERCICES

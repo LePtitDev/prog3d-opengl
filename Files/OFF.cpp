@@ -10,14 +10,14 @@ void FileOFF::Load(const char * fname) {
     std::ifstream file(fname);
     if (!file.is_open()) return;
 
-    char buff[64], * tmp;
+    char buff[256], * tmp;
 
     //On lit l'en-tête "OFF"
-    file.getline(buff, 64);
+    file.getline(buff, 256);
     if (strcmp(buff, "OFF")) return;
 
     //On lit le nombre de points et triangles
-    file.getline(buff, 64);
+    file.getline(buff, 256);
     tmp = strtok(buff, " ");
     unsigned int nbP = atoi(tmp);
     tmp = strtok(nullptr, " ");
@@ -26,27 +26,16 @@ void FileOFF::Load(const char * fname) {
     //On lit les points
     Point pt;
     for (unsigned int i = 0; i < nbP; i++) {
-        file.getline(buff, 64);
-        tmp = strtok(buff, " ");
-        pt.x = atof(tmp);
-        tmp = strtok(nullptr, " ");
-        pt.y = atof(tmp);
-        tmp = strtok(nullptr, " ");
-        pt.z = atof(tmp);
+        file.getline(buff, 256);
+        sscanf(buff, "%lf %lf %lf", &(pt.x), &(pt.y), &(pt.z));
         this->mesh.PushPoint(pt);
     }
-    
+
     //On lit les triangles
-    unsigned int a, b, c;
+    unsigned int t, a, b, c;
     for (unsigned int i = 0; i < nbT; i++) {
-        file.getline(buff, 64);
-        tmp = strtok(buff, " ");
-        tmp = strtok(nullptr, " ");
-        a = atoi(tmp);
-        tmp = strtok(nullptr, " ");
-        b = atoi(tmp);
-        tmp = strtok(nullptr, " ");
-        c = atoi(tmp);
+        file.getline(buff, 256);
+        sscanf(buff, "%d %d %d %d", &t, &a, &b, &c);
         this->mesh.PushTriangle(a, b, c);
     }
 }

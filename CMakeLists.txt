@@ -50,6 +50,7 @@ set(SOURCE_FILES main.hpp main.cpp
 
         Files/OFF.hpp Files/OFF.cpp
 
+        Lumiere.hpp Lumiere.cpp
         Camera.hpp Camera.cpp
 
         Exercices/Exercice.hpp
@@ -63,3 +64,14 @@ set(SOURCE_FILES main.hpp main.cpp
 add_executable(Prog3D ${SOURCE_FILES})
 
 target_link_libraries(Prog3D ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+
+
+add_custom_command(
+        TARGET Prog3D POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+                ./Ressources)
+add_custom_command(
+        TARGET Prog3D POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/Ressources/
+                ./Ressources)

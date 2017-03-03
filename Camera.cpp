@@ -1,8 +1,21 @@
 #include "Camera.hpp"
 
+double Camera::fovy = 0;
+double Camera::aspect = 0;
+double Camera::zNear = 0;
+double Camera::zFar = 0;
+
 const double Camera::zoom_speed = 0.2;
 
 const double Camera::rotation_speed = 0.01;
+
+void Camera::Perspective(double fovy, double aspect, double zNear, double zFar) {
+    Camera::fovy = fovy;
+    Camera::aspect = aspect;
+    Camera::zNear = zNear;
+    Camera::zFar = zFar;
+    gluPerspective(fovy, aspect, zNear, zFar);
+}
 
 Camera::Camera() :
     pos(Point(0.0, 0.0, 3.0)), saved_pos(Point()), left_click(false), pos_x(0), pos_y(0)
@@ -34,7 +47,11 @@ void Camera::RotateLatitude(double a) {
 void Camera::RotateLongitude(double a) {
     Vecteur vp(this->pos.x, 0.f, this->pos.z);
     vp.Normalize();
-    double nv_a = acos(vp.x) + a;
+    double nv_a;
+    if (vp.z >= 0)
+        nv_a = acos(vp.x) + a;
+    else
+        nv_a = -acos(vp.x) + a;
     double dist = sqrt(this->pos.x * this->pos.x + this->pos.z * this->pos.z);
     this->pos = Point(cos(nv_a) * dist, this->pos.y, sin(nv_a) * dist);
 }

@@ -38,6 +38,9 @@ public:
 
     ~Fenetre();
 
+    int GetWidth() const;
+    int GetHeight() const;
+
     void Execute();
 
     void initOrtho();
