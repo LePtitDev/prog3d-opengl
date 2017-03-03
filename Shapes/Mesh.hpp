@@ -14,6 +14,51 @@ typedef struct {
     unsigned int P1, P2, T1, T2;
 } basic_mesharete;
 
+class MeshColor {
+
+public:
+
+    enum MESH_COLOR {
+        WHITE,
+        EMERALD,
+        JADE,
+        OBSIDIAN,
+        PEARL,
+        RUBY,
+        TURQUOISE,
+        BRASS,
+        BRONZE,
+        CHROME,
+        COPPER,
+        GOLD,
+        SILVER,
+        BLACK_PLASTIC,
+        CYAN_PLASTIC,
+        GREEN_PLASTIC,
+        RED_PLASTIC,
+        WHITE_PLASTIC,
+        YELLOW_PLASTIC,
+        BLACK_RUBBER,
+        CYAN_RUBBER,
+        GREEN_RUBBER,
+        RED_RUBBER,
+        WHITE_RUBBER,
+        YELLOW_RUBBER
+    };
+
+private:
+
+    float ambiant[3], diffuse[3], specular[3], shininess;
+
+public:
+
+    MeshColor(MeshColor::MESH_COLOR = MeshColor::WHITE);
+    MeshColor(const MeshColor&);
+
+    void Apply() const;
+
+};
+
 class Mesh {
 
     std::vector<Point> P;
@@ -21,7 +66,12 @@ class Mesh {
     std::vector<basic_meshtriangle> T;
     std::vector<basic_mesharete> A;
 
+    int polygon_mode;
+    int shade_mode;
+
 public:
+
+    MeshColor color;
 
     Mesh();
     Mesh(const Mesh&);
@@ -42,9 +92,19 @@ public:
     void Scale(double, double, double);
 
     void Draw() const;
+    void DrawFront() const;
+    void DrawBack() const;
     void DrawNormals() const;
 
+    void PolygonMode(int);
+    void ShadeMode(int);
+
     Point& operator[](unsigned int);
+
+private:
+
+    void _draw_() const;
+    void _draw_invert_() const;
 
 private:
 

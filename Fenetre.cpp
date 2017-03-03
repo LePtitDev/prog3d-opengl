@@ -83,7 +83,6 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     glutAddMenuEntry(" Exercice 3 ", 53);
 
     int menu6 = glutCreateMenu(Fenetre::SelectExo);
-    glutAddMenuEntry(" Exercice 1 ", 61);
     glutAddMenuEntry(" Exercice 2 ", 62);
     glutAddMenuEntry(" Exercice 3 ", 63);
 
@@ -272,9 +271,13 @@ void Fenetre::SelectExo(int index) {
             Fenetre::actual->exo = new TP5Exo3();
             glutSetWindowTitle("OpenGL - TP 5 - Exercice 3");
             break;
-        case 61:
-            Fenetre::actual->exo = new TP6Exo1();
-            glutSetWindowTitle("OpenGL - TP 6 - Exercice 1");
+        case 62:
+            Fenetre::actual->exo = new TP6Exo2();
+            glutSetWindowTitle("OpenGL - TP 6 - Exercice 2");
+            break;
+        case 63:
+            Fenetre::actual->exo = new TP6Exo3();
+            glutSetWindowTitle("OpenGL - TP 6 - Exercice 3");
             break;
 
         default:
