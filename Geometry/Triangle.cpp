@@ -18,6 +18,10 @@ Triangle::Triangle(const Triangle& t) :
 
 }
 
+Plan Triangle::GetPlan() const {
+    return Plan(this->A, Vecteur::VectorByPoints(this->A, this->B).GetVectoriel(Vecteur::VectorByPoints(this->A, this->C)));
+}
+
 void Triangle::Draw() const {
     glBegin(GL_TRIANGLES);
         glVertex3f(A.x, A.y, A.z);

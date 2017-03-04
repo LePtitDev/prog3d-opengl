@@ -18,6 +18,8 @@ public:
 
     void Draw() const;
 
+    Plan GetPlan() const;
+
 };
 
 #endif //PROG3D_TRIANGLE_HPP

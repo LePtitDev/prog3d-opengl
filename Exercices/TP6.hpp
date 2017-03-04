@@ -12,6 +12,8 @@ class TP6Exo2 : public Exercice {
 
     Lumiere lumiere;
     Camera camera;
+    RRectangle nearR;
+    Point CPos;
 
     int mesh;
     Mesh buddha, bunny, max, triceratops;

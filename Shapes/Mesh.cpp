@@ -477,6 +477,10 @@ Point & Mesh::operator[](unsigned int i) {
     return this->P[i];
 }
 
+Triangle Mesh::GetTriangle(unsigned int i) const {
+    return Triangle(this->P[this->T[i].A], this->P[this->T[i].B], this->P[this->T[i].C]);
+}
+
 void Mesh::_draw_() const {
     glBegin(GL_TRIANGLES);
     if (Mesh::is_smooth) {

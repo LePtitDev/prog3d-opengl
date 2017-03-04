@@ -7,6 +7,8 @@ TP6Exo2::TP6Exo2() :
 {
     Fenetre::Actual().initPerspective();
 
+    this->nearR = camera.GetNearViewport();
+
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
     this->buddha.Normalize();
@@ -33,6 +35,8 @@ TP6Exo2::TP6Exo2() :
     this->triceratops.Normalize();
     this->triceratops.color = MeshColor(MeshColor::PEARL);
 
+    this->CPos = camera.GetPosition();
+
     Mesh::EnableSmooth();
 }
 
@@ -53,6 +57,38 @@ void TP6Exo2::OnDraw() {
         case 3:
             this->triceratops.Draw();
     }
+
+    Lumiere::DisableLights();
+    glColor3f(1, 0, 0);
+    this->nearR.Draw();
+    glColor3f(0, 1, 0);
+    Point tmp;
+    switch (this->mesh) {
+        case 0:
+            for (unsigned int i = 0, sz = this->buddha.PointNumber(); i < sz; i++) {
+                if (Droite(this->buddha[i], Vecteur::VectorByPoints(this->buddha[i], CPos)).GetIntersection(this->nearR.GetPlan(), tmp))
+                    tmp.Draw();
+            }
+            break;
+        case 1:
+            for (unsigned int i = 0, sz = this->bunny.PointNumber(); i < sz; i++) {
+                if (Droite(this->bunny[i], Vecteur::VectorByPoints(this->bunny[i], CPos)).GetIntersection(this->nearR.GetPlan(), tmp))
+                    tmp.Draw();
+            }
+            break;
+        case 2:
+            for (unsigned int i = 0, sz = this->max.PointNumber(); i < sz; i++) {
+                if (Droite(this->max[i], Vecteur::VectorByPoints(this->max[i], CPos)).GetIntersection(this->nearR.GetPlan(), tmp))
+                    tmp.Draw();
+            }
+            break;
+        case 3:
+            for (unsigned int i = 0, sz = this->triceratops.PointNumber(); i < sz; i++) {
+                if (Droite(this->triceratops[i], Vecteur::VectorByPoints(this->triceratops[i], CPos)).GetIntersection(this->nearR.GetPlan(), tmp))
+                    tmp.Draw();
+            }
+    }
+    Lumiere::EnableLights();
 }
 
 void TP6Exo2::OnKeyboardEvent(unsigned char keycode, int x, int y) {

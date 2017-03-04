@@ -8,15 +8,20 @@
 
 class Plan {
 
+    Vecteur n, u, v;
+
 public:
 
     Point p;
-    Vecteur n;
 
     Plan();
     Plan(const Point&, const Vecteur&);
     Plan(const Point&, const Vecteur&, const Vecteur&);
     Plan(const Plan&);
+
+    const Vecteur& GetU() const;
+    const Vecteur& GetV() const;
+    const Vecteur& GetNormal() const;
 
 };
 

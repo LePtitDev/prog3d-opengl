@@ -17,6 +17,8 @@ public:
     Droite(const Point&, const Vecteur&);
     Droite(const Droite&);
 
+    bool GetIntersection(const Plan&, Point&) const;
+
 };
 
 #endif //PROG3D_DROITE_HPP

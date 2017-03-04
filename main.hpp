@@ -18,6 +18,8 @@ class Vecteur;
 class Segment;
 class Droite;
 class Plan;
+class Triangle;
+class RRectangle;
 
 class Curve;
 class Surface;
@@ -25,12 +27,14 @@ class Surface;
 class Camera;
 
 //GEOMETRY
+#include "Geometry/Matrice.hpp"
 #include "Geometry/Point.hpp"
 #include "Geometry/Vecteur.hpp"
 #include "Geometry/Segment.hpp"
 #include "Geometry/Droite.hpp"
 #include "Geometry/Plan.hpp"
 #include "Geometry/Triangle.hpp"
+#include "Geometry/Rectangle.hpp"
 
 #include "Geometry/Curve.hpp"
 #include "Geometry/Surface.hpp"
@@ -46,7 +50,8 @@ class Camera;
 //FILES
 #include "Files/OFF.hpp"
 
-//CAMERA
+//SCENE
+#include "Raycaster.hpp"
 #include "Lumiere.hpp"
 #include "Camera.hpp"
 

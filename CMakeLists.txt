@@ -31,12 +31,15 @@ endif(NOT OPENGL_FOUND)
 
 set(SOURCE_FILES main.hpp main.cpp
         Fenetre.hpp Fenetre.cpp
+
+        Geometry/Matrice.hpp
         Geometry/Point.hpp Geometry/Point.cpp
         Geometry/Segment.hpp Geometry/Segment.cpp
         Geometry/Vecteur.hpp Geometry/Vecteur.cpp
         Geometry/Droite.hpp Geometry/Droite.cpp
         Geometry/Plan.hpp Geometry/Plan.cpp
         Geometry/Triangle.hpp Geometry/Triangle.cpp
+        Geometry/Rectangle.hpp Geometry/Rectangle.cpp
 
         Geometry/Curve.hpp Geometry/Curve.cpp
         Geometry/Surface.hpp Geometry/Surface.cpp
@@ -50,6 +53,7 @@ set(SOURCE_FILES main.hpp main.cpp
 
         Files/OFF.hpp Files/OFF.cpp
 
+        Raycaster.hpp Raycaster.cpp
         Lumiere.hpp Lumiere.cpp
         Camera.hpp Camera.cpp
 

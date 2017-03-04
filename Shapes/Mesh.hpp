@@ -100,6 +100,7 @@ public:
     void ShadeMode(int);
 
     Point& operator[](unsigned int);
+    Triangle GetTriangle(unsigned int) const;
 
 private:
 

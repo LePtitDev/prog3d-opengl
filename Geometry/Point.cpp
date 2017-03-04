@@ -26,6 +26,14 @@ Point Point::GetProjection(const Droite & d) const {
     return Point(d.p.x + vp2.x * norm, d.p.y + vp2.y * norm, d.p.z + vp2.z * norm);
 }
 
+Point Point::GetProjection(const Plan & P) const {
+    Vecteur vp1(P.p.x - this->x, P.p.y - this->y, P.p.z - this->z), vp2(P.GetNormal());
+    double norm = vp1.GetScalar(vp2) / vp2.GetNorm();
+
+    vp2.Normalize();
+    return Point(this->x - vp2.x * norm, this->y - vp2.y * norm, this->z - vp2.z * norm);
+}
+
 void Point::Draw() const {
     glBegin(GL_POINTS);
     glVertex3f(this->x, this->y, this->z);
@@ -34,4 +42,8 @@ void Point::Draw() const {
 
 Point Point::operator+(const Vecteur & v) const {
     return Point(this->x + v.x, this->y + v.y, this->z + v.z);
+}
+
+Point Point::operator-(const Vecteur & v) const {
+    return Point(this->x - v.x, this->y - v.y, this->z - v.z);
 }

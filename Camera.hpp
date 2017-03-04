@@ -10,13 +10,12 @@ class Camera {
 
 private:
 
+    static const double zoom_speed;
+    static const double rotation_speed;
+
     static double fovy, aspect, zNear, zFar;
 
 public:
-
-    static const double zoom_speed;
-
-    static const double rotation_speed;
 
     static void Perspective(double, double, double, double);
 
@@ -33,6 +32,11 @@ public:
     Camera();
     Camera(const Point&);
     Camera(const Camera&);
+
+    const Point& GetPosition() const;
+    RRectangle GetNearViewport();
+    RRectangle GetFarViewport();
+    std::array<RRectangle, 2> GetViewports();
 
     void RotateLatitude(double);
     void RotateLongitude(double);

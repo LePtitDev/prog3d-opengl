@@ -17,10 +17,12 @@ public:
     Point(const Point&);
 
     Point GetProjection(const Droite&) const;
+    Point GetProjection(const Plan&) const;
 
     void Draw() const;
 
     Point operator+(const Vecteur&) const;
+    Point operator-(const Vecteur&) const;
 
 };
 

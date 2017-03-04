@@ -35,6 +35,40 @@ Camera::Camera(const Camera & c) :
 
 }
 
+const Point & Camera::GetPosition() const {
+    return this->pos;
+}
+
+RRectangle Camera::GetNearViewport() {
+    double n_height_2 = tan(Camera::fovy / 2.0), n_width_2 = Camera::aspect * n_height_2;
+    Vecteur v_near = Vecteur::VectorByPoints(this->pos, Point(0, 0, 0)), v_top(0, 1, 0);
+    v_near.Normalize();
+    Vecteur v_width = v_near.GetVectoriel(v_top) * n_width_2, v_height = v_near.GetVectoriel(v_width) * n_height_2;
+    v_near = v_near * Camera::zNear;
+    return RRectangle(this->pos + v_near - v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear + v_height * Camera::zNear);
+}
+
+RRectangle Camera::GetFarViewport() {
+    double n_height_2 = tan(Camera::fovy / 2.0), n_width_2 = Camera::aspect * n_height_2;
+    Vecteur v_far = Vecteur::VectorByPoints(this->pos, Point(0, 0, 0)), v_top(0, 1, 0);
+    v_far.Normalize();
+    Vecteur v_width = v_far.GetVectoriel(v_top) * n_width_2, v_height = v_far.GetVectoriel(v_width) * n_height_2;
+    v_far = v_far * Camera::zFar;
+    return RRectangle(this->pos + v_far - v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar + v_height * Camera::zFar);
+}
+
+std::array<RRectangle, 2> Camera::GetViewports() {
+    std::array<RRectangle, 2> res;
+    double n_height_2 = tan(Camera::fovy / 2.0), n_width_2 = Camera::aspect * n_height_2;
+    Vecteur v_near = Vecteur::VectorByPoints(this->pos, Point(0, 0, 0)), v_top(0, 1, 0);
+    v_near.Normalize();
+    Vecteur v_far = v_near * Camera::zFar, v_width = v_near.GetVectoriel(v_top) * n_width_2, v_height = v_near.GetVectoriel(v_width) * n_height_2;
+    v_near = v_near * Camera::zNear;
+    res[0] = RRectangle(this->pos + v_near - v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear + v_height * Camera::zNear);
+    res[1] = RRectangle(this->pos + v_far - v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar + v_height * Camera::zFar);
+    return res;
+}
+
 void Camera::RotateLatitude(double a) {
     Vecteur vp(this->pos.x, this->pos.y, this->pos.z);
     Vecteur v1(vp.x, 0.f, vp.z);
