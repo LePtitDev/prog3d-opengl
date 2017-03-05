@@ -177,6 +177,8 @@ void Fenetre::OnDisplay() {
 
     gluOrtho2D (0, (double)Fenetre::actual->win_width, 0, (double)Fenetre::actual->win_height);
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     Lumiere::Mode2D();
     Fenetre::actual->exo->OnDraw2D();
 

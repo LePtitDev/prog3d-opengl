@@ -12,13 +12,13 @@ uiLayout::~uiLayout() {
     }
 }
 
-void uiLayout::AddWidget(uiWidget * w) {
-    this->widget.push_back(w);
+void uiLayout::AddWidget(uiWidget& w) {
+    this->widget.push_back(&w);
 }
 
-void uiLayout::RemoveWidget(uiWidget * w) {
+void uiLayout::RemoveWidget(uiWidget& w) {
     for (unsigned int i = 0, sz = this->widget.size(); i < sz; i++) {
-        if (this->widget[i] == w) {
+        if (this->widget[i] == &w) {
             delete this->widget[i];
             this->widget.erase(this->widget.begin() + i);
         }

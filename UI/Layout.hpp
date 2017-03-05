@@ -19,8 +19,8 @@ public:
     uiLayout();
     ~uiLayout();
 
-    void AddWidget(uiWidget *);
-    void RemoveWidget(uiWidget *);
+    void AddWidget(uiWidget&);
+    void RemoveWidget(uiWidget&);
 
     bool MouseInside(int, int) const;
 

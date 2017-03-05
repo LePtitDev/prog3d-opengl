@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <GL/glut.h>
@@ -55,9 +56,13 @@ class Camera;
 #include "Lumiere.hpp"
 #include "Camera.hpp"
 
+//TOOLS
+#include "Tools/Timer.hpp"
+
 //UI
 #include "UI/Widget.hpp"
 #include "UI/Bouton.hpp"
+#include "UI/Switch.hpp"
 #include "UI/Layout.hpp"
 
 //EXERCICES

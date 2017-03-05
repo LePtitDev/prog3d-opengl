@@ -18,6 +18,12 @@ class TP6Exo2 : public Exercice {
     int mesh;
     Mesh buddha, bunny, max, triceratops;
 
+    uiLayout layout;
+    uiBouton bt_buddha, bt_bunny, bt_max, bt_triceratops;
+    uiSwitch sw_poly, sw_shade, sw_projection;
+
+    bool display_projection;
+
 public:
 
     TP6Exo2();
@@ -33,6 +39,14 @@ public:
 
     void OnMotionUnpressedEvent(int, int);
 
+    static void action_bt_buddha(void *);
+    static void action_bt_bunny(void *);
+    static void action_bt_max(void *);
+    static void action_bt_triceratops(void *);
+    static void action_sw_poly(bool, void *);
+    static void action_sw_shade(bool, void *);
+    static void action_sw_projection(bool, void*);
+
 };
 
 /****** EXERCICE 3 ******/
@@ -45,7 +59,9 @@ class TP6Exo3 : public Exercice {
     int mesh;
     Mesh buddha, bunny, max, triceratops;
 
-    uiBouton bouton;
+    uiLayout layout;
+    uiBouton bt_buddha, bt_bunny, bt_max, bt_triceratops;
+    uiSwitch sw_poly, sw_shade;
 
 public:
 
@@ -61,6 +77,13 @@ public:
     void OnMotionPressedEvent(int, int);
 
     void OnMotionUnpressedEvent(int, int);
+
+    static void action_bt_buddha(void *);
+    static void action_bt_bunny(void *);
+    static void action_bt_max(void *);
+    static void action_bt_triceratops(void *);
+    static void action_sw_poly(bool, void *);
+    static void action_sw_shade(bool, void *);
 
 };
 
