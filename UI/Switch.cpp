@@ -37,6 +37,8 @@ bool uiSwitch::MouseInside(int x, int y) const {
             this->position.y <= y && y <= this->position.y + this->height);
 }
 
+void uiSwitch::Update() {}
+
 void uiSwitch::Draw() const {
     int left = this->position.x, top = Fenetre::Actual().GetHeight() - this->position.y - this->height / 2 + uiSwitch::dim_height / 2,
         right = left + uiSwitch::dim_width, bottom = top - uiSwitch::dim_height;

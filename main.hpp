@@ -2,6 +2,7 @@
 #define PROG3D_MAIN_HPP
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <vector>
 #include <array>
@@ -58,11 +59,14 @@ class Camera;
 
 //TOOLS
 #include "Tools/Timer.hpp"
+#include "Tools/Color.hpp"
 
 //UI
 #include "UI/Widget.hpp"
 #include "UI/Bouton.hpp"
 #include "UI/Switch.hpp"
+#include "UI/GraphFIFO.hpp"
+#include "UI/FPS_Counter.hpp"
 #include "UI/Layout.hpp"
 
 //EXERCICES

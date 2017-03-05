@@ -6,12 +6,6 @@ uiLayout::uiLayout() :
 
 }
 
-uiLayout::~uiLayout() {
-    for (unsigned int i = 0, sz = this->widget.size(); i < sz; i++) {
-        delete this->widget[i];
-    }
-}
-
 void uiLayout::AddWidget(uiWidget& w) {
     this->widget.push_back(&w);
 }
@@ -35,6 +29,7 @@ bool uiLayout::MouseInside(int x, int y) const {
 
 void uiLayout::OnDisplay() {
     for (unsigned int i = 0, sz = this->widget.size(); i < sz; i++) {
+        this->widget[i]->Update();
         this->widget[i]->Draw();
     }
 }

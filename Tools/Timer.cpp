@@ -20,7 +20,7 @@ void uTimer::Start() {
 
 void uTimer::Stop() {
     this->active = false;
-    this->current_time += (double)this->start / CLOCKS_PER_SEC;
+    this->current_time += (double)(clock() - this->start) / CLOCKS_PER_SEC;
 }
 
 void uTimer::Resume() {
@@ -30,7 +30,7 @@ void uTimer::Resume() {
 
 double uTimer::GetTime() const {
     if (this->active)
-        return this->current_time + (double)this->start / CLOCKS_PER_SEC;
+        return this->current_time + (double)(clock() - this->start) / CLOCKS_PER_SEC;
     else
         return this->current_time;
 }

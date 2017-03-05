@@ -186,6 +186,8 @@ void Fenetre::OnDisplay() {
     //glFlush();
     // Echange les buffers de rendu
     glutSwapBuffers();
+
+    glutPostRedisplay();
 }
 
 void Fenetre::OnReshape(int width, int height) {
@@ -211,31 +213,19 @@ void Fenetre::OnReshape(int width, int height) {
 }
 
 void Fenetre::OnKeyboardEvent(unsigned char key, int x, int y) {
-    //std::cout << "[Keyboard]: key = " << (int)key << ", x = " << x << ", y = " << y << std::endl;
-
     Fenetre::actual->exo->OnKeyboardEvent(key, x, y);
-
-    glutPostRedisplay();
 }
 
 void Fenetre::OnMouseEvent(int button, int state, int x, int y) {
-    //std::cout << "[Mouse]: button = " << button << ", state = " << state << ", x = " << x << ", y = " << y << std::endl;
-
     Fenetre::actual->exo->OnMouseEvent(button, state, x, y);
-
-    glutPostRedisplay();
 }
 
 void Fenetre::OnMotionPressedEvent(int x, int y) {
     Fenetre::actual->exo->OnMotionPressedEvent(x, y);
-
-    glutPostRedisplay();
 }
 
 void Fenetre::OnMotionUnpressedEvent(int x, int y) {
     Fenetre::actual->exo->OnMotionUnpressedEvent(x, y);
-
-    glutPostRedisplay();
 }
 
 void Fenetre::SelectExo(int index) {
@@ -307,6 +297,4 @@ void Fenetre::SelectExo(int index) {
             Fenetre::actual->exo = new TP1Exo();
             glutSetWindowTitle("OpenGL - TP 1");
     }
-
-    glutPostRedisplay();
 }

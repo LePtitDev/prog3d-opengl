@@ -19,6 +19,8 @@ public:
 
     virtual bool MouseInside(int, int) const = 0;
 
+    virtual void Update() = 0;
+
     virtual void Draw() const = 0;
 
     virtual void OnMouseUp(int, int, int) = 0;

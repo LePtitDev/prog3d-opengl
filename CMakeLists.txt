@@ -58,10 +58,13 @@ set(SOURCE_FILES main.hpp main.cpp
         Camera.hpp Camera.cpp
 
         Tools/Timer.hpp Tools/Timer.cpp
+        Tools/Color.hpp Tools/Color.cpp
 
         UI/Widget.hpp
         UI/Bouton.hpp UI/Bouton.cpp
         UI/Switch.hpp UI/Switch.cpp
+        UI/GraphFIFO.hpp UI/GraphFIFO.cpp
+        UI/FPS_Counter.hpp UI/FPS_Counter.cpp
         UI/Layout.hpp UI/Layout.cpp
 
         Exercices/Exercice.hpp

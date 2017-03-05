@@ -17,7 +17,6 @@ class uiLayout {
 public:
 
     uiLayout();
-    ~uiLayout();
 
     void AddWidget(uiWidget&);
     void RemoveWidget(uiWidget&);

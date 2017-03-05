@@ -21,6 +21,7 @@ class TP6Exo2 : public Exercice {
     uiLayout layout;
     uiBouton bt_buddha, bt_bunny, bt_max, bt_triceratops;
     uiSwitch sw_poly, sw_shade, sw_projection;
+    uiFPS_Counter fps_count;
 
     bool display_projection;
 
@@ -62,6 +63,7 @@ class TP6Exo3 : public Exercice {
     uiLayout layout;
     uiBouton bt_buddha, bt_bunny, bt_max, bt_triceratops;
     uiSwitch sw_poly, sw_shade;
+    uiFPS_Counter fps_count;
 
 public:
 

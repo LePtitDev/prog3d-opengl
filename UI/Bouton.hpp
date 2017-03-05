@@ -36,6 +36,8 @@ public:
 
     bool MouseInside(int, int) const;
 
+    void Update();
+
     void Draw() const;
 
     void OnMouseUp(int, int, int);

@@ -32,6 +32,8 @@ bool uiBouton::MouseInside(int x, int y) const {
             this->position.y <= y && y <= this->position.y + this->height);
 }
 
+void uiBouton::Update() {}
+
 void uiBouton::Draw() const {
     int left = this->position.x, top = Fenetre::Actual().GetHeight() - this->position.y,
         right = left + this->width, bottom = top - this->height;

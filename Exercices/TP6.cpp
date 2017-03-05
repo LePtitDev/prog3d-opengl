@@ -10,7 +10,8 @@ TP6Exo2::TP6Exo2() :
         bt_triceratops("Triceratops", 280, 10, 80, 30, TP6Exo2::action_bt_triceratops, (void*)this),
         sw_poly("Polygones pleins", true, 10, 50, 100, 30, TP6Exo2::action_sw_poly, (void*)this),
         sw_shade("Smooth", true, 10, 90, 100, 30, TP6Exo2::action_sw_shade, (void*)this),
-        sw_projection("Afficher la projection", false, 10, 200, 100, 30, TP6Exo2::action_sw_projection, (void*)this)
+        sw_projection("Afficher la projection", false, 10, 200, 100, 30, TP6Exo2::action_sw_projection, (void*)this),
+        fps_count(800, 10, 200, 150, uColor::CYAN)
 {
     Fenetre::Actual().initPerspective();
 
@@ -21,6 +22,7 @@ TP6Exo2::TP6Exo2() :
     layout.AddWidget(sw_poly);
     layout.AddWidget(sw_shade);
     layout.AddWidget(sw_projection);
+    layout.AddWidget(fps_count);
 
     this->nearR = camera.GetNearViewport();
 
@@ -196,7 +198,8 @@ TP6Exo3::TP6Exo3() :
         bt_max("Max", 190, 10, 80, 30, TP6Exo3::action_bt_max, (void*)this),
         bt_triceratops("Triceratops", 280, 10, 80, 30, TP6Exo3::action_bt_triceratops, (void*)this),
         sw_poly("Polygones pleins", true, 10, 50, 100, 30, TP6Exo3::action_sw_poly, (void*)this),
-        sw_shade("Smooth", true, 10, 90, 100, 30, TP6Exo3::action_sw_shade, (void*)this)
+        sw_shade("Smooth", true, 10, 90, 100, 30, TP6Exo3::action_sw_shade, (void*)this),
+        fps_count(800, 10, 200, 150, uColor::CYAN)
 {
     Fenetre::Actual().initPerspective();
 
@@ -206,6 +209,7 @@ TP6Exo3::TP6Exo3() :
     layout.AddWidget(bt_triceratops);
     layout.AddWidget(sw_poly);
     layout.AddWidget(sw_shade);
+    layout.AddWidget(fps_count);
 
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
