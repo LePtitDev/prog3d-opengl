@@ -57,6 +57,10 @@ set(SOURCE_FILES main.hpp main.cpp
         Lumiere.hpp Lumiere.cpp
         Camera.hpp Camera.cpp
 
+        UI/Widget.hpp
+        UI/Bouton.hpp UI/Bouton.cpp
+        UI/Layout.hpp UI/Layout.cpp
+
         Exercices/Exercice.hpp
         Exercices/TP1.hpp Exercices/TP1.cpp
         Exercices/TP2.hpp Exercices/TP2.cpp

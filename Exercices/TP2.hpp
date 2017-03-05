@@ -19,7 +19,8 @@ public:
 
     TP2Exo1();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 
@@ -43,7 +44,8 @@ public:
 
     TP2Exo2();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 
@@ -67,7 +69,8 @@ public:
 
     TP2Exo3();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 

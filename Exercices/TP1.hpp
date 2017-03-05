@@ -15,7 +15,8 @@ public:
 
     TP1Exo();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 

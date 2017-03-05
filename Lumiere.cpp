@@ -25,6 +25,14 @@ void Lumiere::Apply() const {
 
 int Lumiere::nb_lights = 0;
 
+void Lumiere::Mode2D() {
+    if (Lumiere::nb_lights > 0) Lumiere::DisableLights();
+}
+
+void Lumiere::Mode3D() {
+    if (Lumiere::nb_lights > 0) Lumiere::EnableLights();
+}
+
 void Lumiere::EnableLights() {
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);

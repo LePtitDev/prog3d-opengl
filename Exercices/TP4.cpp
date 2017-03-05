@@ -8,11 +8,12 @@ TP4Exo1::TP4Exo1() :
     Fenetre::Actual().initPerspective();
 }
 
-void TP4Exo1::OnDraw() {
+void TP4Exo1::OnDraw3D() {
     this->camera.Apply();
 
     this->c.Draw();
 }
+void TP4Exo1::OnDraw2D() {}
 
 void TP4Exo1::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -34,11 +35,12 @@ TP4Exo2::TP4Exo2() :
     Fenetre::Actual().initPerspective();
 }
 
-void TP4Exo2::OnDraw() {
+void TP4Exo2::OnDraw3D() {
     this->camera.Apply();
 
     this->c.Draw();
 }
+void TP4Exo2::OnDraw2D() {}
 
 void TP4Exo2::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -60,11 +62,12 @@ TP4Exo3::TP4Exo3() :
     Fenetre::Actual().initPerspective();
 }
 
-void TP4Exo3::OnDraw() {
+void TP4Exo3::OnDraw3D() {
     this->camera.Apply();
 
     this->b.Draw();
 }
+void TP4Exo3::OnDraw2D() {}
 
 void TP4Exo3::OnKeyboardEvent(unsigned char, int, int) {}
 

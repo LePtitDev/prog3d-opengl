@@ -10,7 +10,8 @@ class Exercice {
 
 public:
 
-    virtual void OnDraw() = 0;
+    virtual void OnDraw3D() = 0;
+    virtual void OnDraw2D() = 0;
 
     virtual void OnKeyboardEvent(unsigned char, int, int) = 0;
 

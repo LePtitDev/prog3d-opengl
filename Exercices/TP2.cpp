@@ -10,7 +10,7 @@ TP2Exo1::TP2Exo1() :
     this->courbe = Curve::HermiteCubic(p0, p1, v0, v1, 20);
 }
 
-void TP2Exo1::OnDraw() {
+void TP2Exo1::OnDraw3D() {
     glColor3f(1.0, 0.0, 0.0);
     this->p0.Draw();
     this->p1.Draw();
@@ -19,6 +19,7 @@ void TP2Exo1::OnDraw() {
     glColor3f(1.0, 1.0, 1.0);
     this->courbe.Draw();
 }
+void TP2Exo1::OnDraw2D() {}
 
 void TP2Exo1::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -38,7 +39,7 @@ TP2Exo2::TP2Exo2() :
     this->courbe = Curve::BezierByBernstein(P, 4, 20);
 }
 
-void TP2Exo2::OnDraw() {
+void TP2Exo2::OnDraw3D() {
     glColor3f(1.0, 0.0, 0.0);
     this->p0.Draw();
     this->p1.Draw();
@@ -50,6 +51,7 @@ void TP2Exo2::OnDraw() {
     glColor3f(1.0, 1.0, 1.0);
     this->courbe.Draw();
 }
+void TP2Exo2::OnDraw2D() {}
 
 void TP2Exo2::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -69,7 +71,7 @@ TP2Exo3::TP2Exo3() :
     this->courbe = Curve::BezierByCasteljau(P, 4, 20);
 }
 
-void TP2Exo3::OnDraw() {
+void TP2Exo3::OnDraw3D() {
     glColor3f(1.0, 0.0, 0.0);
     this->p0.Draw();
     this->p1.Draw();
@@ -81,6 +83,7 @@ void TP2Exo3::OnDraw() {
     glColor3f(1.0, 1.0, 1.0);
     this->courbe.Draw();
 }
+void TP2Exo3::OnDraw2D() {}
 
 void TP2Exo3::OnKeyboardEvent(unsigned char, int, int) {}
 

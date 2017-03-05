@@ -22,7 +22,8 @@ public:
 
     TP6Exo2();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 
@@ -44,11 +45,14 @@ class TP6Exo3 : public Exercice {
     int mesh;
     Mesh buddha, bunny, max, triceratops;
 
+    uiBouton bouton;
+
 public:
 
     TP6Exo3();
 
-    void OnDraw();
+    void OnDraw3D();
+    void OnDraw2D();
 
     void OnKeyboardEvent(unsigned char, int, int);
 

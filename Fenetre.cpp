@@ -154,10 +154,31 @@ void Fenetre::OnDisplay() {
     // On initialize la taille d'un point
     glPointSize(5);
 
+    glMatrixMode(GL_PROJECTION);
+
     //On charge la matrice d'identité
     glLoadIdentity();
 
-    Fenetre::actual->exo->OnDraw();
+    if (Fenetre::actual->ortho) {
+        // On initialise la caméra en orthographique
+        glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
+    }
+    else {
+        // On initialise la caméra en perspective
+        Camera::Perspective(45.0, (double)Fenetre::actual->win_width / (double)Fenetre::actual->win_height, 1.0, 100.0);
+    }
+
+    Lumiere::Mode3D();
+    Fenetre::actual->exo->OnDraw3D();
+
+    glMatrixMode (GL_PROJECTION);
+
+    glLoadIdentity ();
+
+    gluOrtho2D (0, (double)Fenetre::actual->win_width, 0, (double)Fenetre::actual->win_height);
+
+    Lumiere::Mode2D();
+    Fenetre::actual->exo->OnDraw2D();
 
     // Trace la scène : Avec un seul buffer
     //glFlush();

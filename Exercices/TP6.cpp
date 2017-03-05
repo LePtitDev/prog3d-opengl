@@ -40,7 +40,7 @@ TP6Exo2::TP6Exo2() :
     Mesh::EnableSmooth();
 }
 
-void TP6Exo2::OnDraw() {
+void TP6Exo2::OnDraw3D() {
     this->camera.Apply();
     this->lumiere.Apply();
 
@@ -90,6 +90,7 @@ void TP6Exo2::OnDraw() {
     }
     Lumiere::EnableLights();
 }
+void TP6Exo2::OnDraw2D() {}
 
 void TP6Exo2::OnKeyboardEvent(unsigned char keycode, int x, int y) {
     switch (keycode) {
@@ -150,7 +151,7 @@ void TP6Exo2::OnMotionUnpressedEvent(int, int) {}
 /****** EXERCICE 3 ******/
 
 TP6Exo3::TP6Exo3() :
-        camera(Point(0.0, 0.0, 15.0)), lumiere(Point(0, 0, 4)), mesh(0)
+        camera(Point(0.0, 0.0, 15.0)), lumiere(Point(0, 0, 4)), mesh(0), bouton("Bouton", 10, 10, 100, 30, nullptr, nullptr)
 {
     Fenetre::Actual().initPerspective();
 
@@ -179,7 +180,7 @@ TP6Exo3::TP6Exo3() :
     Mesh::EnableSmooth();
 }
 
-void TP6Exo3::OnDraw() {
+void TP6Exo3::OnDraw3D() {
     this->camera.Apply();
     this->lumiere.Apply();
 
@@ -208,6 +209,9 @@ void TP6Exo3::OnDraw() {
             this->triceratops.color = MeshColor(MeshColor::JADE);
             this->triceratops.DrawBack();
     }
+}
+void TP6Exo3::OnDraw2D() {
+    this->bouton.Draw();
 }
 
 void TP6Exo3::OnKeyboardEvent(unsigned char keycode, int x, int y) {
@@ -257,11 +261,18 @@ void TP6Exo3::OnKeyboardEvent(unsigned char keycode, int x, int y) {
 void TP6Exo3::OnMouseEvent(int button, int state, int x, int y) {
     camera.OnMouseEvent(button, state, x, y);
     lumiere.pos = camera.pos;
+    if (state == 0)
+        this->bouton.OnMouseDown(button, x, y);
+    else
+        this->bouton.OnMouseUp(button, x, y);
 }
 
 void TP6Exo3::OnMotionPressedEvent(int x, int y) {
     camera.OnMotionPressedEvent(x, y);
     lumiere.pos = camera.pos;
+    this->bouton.OnMouseMotion(0, true, x, y);
 }
 
-void TP6Exo3::OnMotionUnpressedEvent(int, int) {}
+void TP6Exo3::OnMotionUnpressedEvent(int x, int y) {
+    this->bouton.OnMouseMotion(0, false, x, y);
+}

@@ -28,6 +28,8 @@ private:
 
 public:
 
+    static void Mode2D();
+    static void Mode3D();
     static void EnableLights();
     static void DisableLights();
 

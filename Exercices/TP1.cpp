@@ -7,11 +7,12 @@ TP1Exo::TP1Exo() :
     p3 = p1.GetProjection(Droite(p2, v));
 }
 
-void TP1Exo::OnDraw() {
+void TP1Exo::OnDraw3D() {
     p1.Draw();
     (Segment(p2, Point(p2.x + v.x, p2.y + v.y, p2.z + v.z))).Draw();
     p3.Draw();
 }
+void TP1Exo::OnDraw2D() {}
 
 void TP1Exo::OnKeyboardEvent(unsigned char, int, int) {}
 

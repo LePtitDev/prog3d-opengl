@@ -18,7 +18,7 @@ TP3Exo1::TP3Exo1() :
     this->surface = Surface::CylindricalSurface(this->courbe.GetArray(), 4, this->droite, 10, 20);
 }
 
-void TP3Exo1::OnDraw() {
+void TP3Exo1::OnDraw3D() {
     this->camera.Apply();
 
     this->surface.Draw();
@@ -42,6 +42,7 @@ void TP3Exo1::OnDraw() {
     Segment(this->courbe[2], P2[2]).Draw();
     Segment(this->courbe[3], P2[3]).Draw();
 }
+void TP3Exo1::OnDraw2D() {}
 
 void TP3Exo1::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -79,7 +80,7 @@ TP3Exo2::TP3Exo2() :
     this->surface = Surface::RuledSurface(this->courbe1.GetArray(), 4, this->courbe2.GetArray(), 4, 10, 20);
 }
 
-void TP3Exo2::OnDraw() {
+void TP3Exo2::OnDraw3D() {
     this->camera.Apply();
 
     this->surface.Draw();
@@ -99,6 +100,7 @@ void TP3Exo2::OnDraw() {
     Segment(this->courbe1[2], this->courbe2[2]).Draw();
     Segment(this->courbe1[3], this->courbe2[3]).Draw();
 }
+void TP3Exo2::OnDraw2D() {}
 
 void TP3Exo2::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -127,7 +129,7 @@ TP3Exo3::TP3Exo3() :
     this->surface = Surface::BezierSurfaceByCasteljau(P, 20, 20);
 }
 
-void TP3Exo3::OnDraw() {
+void TP3Exo3::OnDraw3D() {
     this->camera.Apply();
 
     this->surface.Draw();
@@ -136,6 +138,7 @@ void TP3Exo3::OnDraw() {
     glColor3f(0.0, 0.0, 1.0);
     this->P[0][0].Draw();
 }
+void TP3Exo3::OnDraw2D() {}
 
 void TP3Exo3::OnKeyboardEvent(unsigned char, int, int) {}
 

@@ -55,6 +55,11 @@ class Camera;
 #include "Lumiere.hpp"
 #include "Camera.hpp"
 
+//UI
+#include "UI/Widget.hpp"
+#include "UI/Bouton.hpp"
+#include "UI/Layout.hpp"
+
 //EXERCICES
 #include "Exercices/Exercice.hpp"
 

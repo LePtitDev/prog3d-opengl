@@ -8,11 +8,12 @@ TP5Exo1::TP5Exo1() :
     Fenetre::Actual().initPerspective();
 }
 
-void TP5Exo1::OnDraw() {
+void TP5Exo1::OnDraw3D() {
     this->camera.Apply();
 
     this->v.Draw();
 }
+void TP5Exo1::OnDraw2D() {}
 
 void TP5Exo1::OnKeyboardEvent(unsigned char, int, int) {}
 
@@ -38,10 +39,11 @@ TP5Exo2::TP5Exo2() :
     v = Volume(Point(0, 0, 0), 4.0, 6, TP5Exo2::InsideBall, nullptr);
 }
 
-void TP5Exo2::OnDraw() {
+void TP5Exo2::OnDraw3D() {
     this->camera.Apply();
     this->v.Draw();
 }
+void TP5Exo2::OnDraw2D() {}
 
 void TP5Exo2::OnKeyboardEvent(unsigned char key, int x, int y) {
     switch (key) {
@@ -89,7 +91,7 @@ TP5Exo3::TP5Exo3() :
     v3 = v1.Intersection(v2);
 }
 
-void TP5Exo3::OnDraw() {
+void TP5Exo3::OnDraw3D() {
     this->camera.Apply();
 
     if (v1_show == 0)
@@ -103,6 +105,7 @@ void TP5Exo3::OnDraw() {
 
     this->v3.Draw();
 }
+void TP5Exo3::OnDraw2D() {}
 
 void TP5Exo3::OnKeyboardEvent(unsigned char key, int x, int y) {
     switch (key) {
