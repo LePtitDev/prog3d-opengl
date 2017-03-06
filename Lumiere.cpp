@@ -18,7 +18,7 @@ Lumiere::~Lumiere() {
 }
 
 void Lumiere::Apply() const {
-    glEnable(GL_LIGHT0);
+    glEnable(this->light);
     float position[4] = { (float)this->pos.x, (float)this->pos.y, (float)this->pos.z, 1 };
     glLightfv(this->light, GL_POSITION, position);
 }

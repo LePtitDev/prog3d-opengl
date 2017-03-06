@@ -44,6 +44,7 @@ TP6Exo2::TP6Exo2() :
     this->triceratops.color = MeshColor(MeshColor::PEARL);
 
     camera.Reposition(this->buddha.GetBox());
+    lumiere.pos = camera.pos;
 
     this->CPos = camera.GetPosition();
 
