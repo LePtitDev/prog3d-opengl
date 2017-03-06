@@ -18,9 +18,17 @@ Lumiere::~Lumiere() {
 }
 
 void Lumiere::Apply() const {
+    if (this->light == 0) return;
     glEnable(this->light);
     float position[4] = { (float)this->pos.x, (float)this->pos.y, (float)this->pos.z, 1 };
     glLightfv(this->light, GL_POSITION, position);
+}
+
+void Lumiere::Remove() {
+    Lumiere::nb_lights--;
+    if (Lumiere::nb_lights == 0)
+        glDisable(GL_LIGHTING);
+    this->light = 0;
 }
 
 int Lumiere::nb_lights = 0;

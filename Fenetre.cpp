@@ -12,7 +12,9 @@ Fenetre& Fenetre::Actual() {
 }
 
 
-Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv[]) {
+Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv[]) :
+    tpNum(1), exoNum(1)
+{
     Fenetre::actual = this;
 
     // Initialise GLUT
@@ -229,72 +231,72 @@ void Fenetre::OnMotionUnpressedEvent(int x, int y) {
 }
 
 void Fenetre::SelectExo(int index) {
-    delete Fenetre::actual->exo;
+    if (Fenetre::actual->tpNum == 6) {
+        if (Fenetre::actual->exoNum == 2)
+            delete ((TP6Exo2 *)Fenetre::actual->exo);
+        else
+            delete ((TP6Exo3 *)Fenetre::actual->exo);
+    }
+    else
+        delete Fenetre::actual->exo;
+
+    Fenetre::actual->tpNum = index / 10;
+    Fenetre::actual->exoNum = index % 10;
 
     switch (index) {
         case 11:
             Fenetre::actual->exo = new TP1Exo();
-            glutSetWindowTitle("OpenGL - TP 1");
             break;
         case 21:
             Fenetre::actual->exo = new TP2Exo1();
-            glutSetWindowTitle("OpenGL - TP 2 - Exercice 1");
             break;
         case 22:
             Fenetre::actual->exo = new TP2Exo2();
-            glutSetWindowTitle("OpenGL - TP 2 - Exercice 2");
             break;
         case 23:
             Fenetre::actual->exo = new TP2Exo3();
-            glutSetWindowTitle("OpenGL - TP 2 - Exercice 3");
             break;
         case 31:
             Fenetre::actual->exo = new TP3Exo1();
-            glutSetWindowTitle("OpenGL - TP 3 - Exercice 1");
             break;
         case 32:
             Fenetre::actual->exo = new TP3Exo2();
-            glutSetWindowTitle("OpenGL - TP 3 - Exercice 2");
             break;
         case 33:
             Fenetre::actual->exo = new TP3Exo3();
-            glutSetWindowTitle("OpenGL - TP 3 - Exercice 3");
             break;
         case 41:
             Fenetre::actual->exo = new TP4Exo1();
-            glutSetWindowTitle("OpenGL - TP 4 - Exercice 1");
             break;
         case 42:
             Fenetre::actual->exo = new TP4Exo2();
-            glutSetWindowTitle("OpenGL - TP 4 - Exercice 2");
             break;
         case 43:
             Fenetre::actual->exo = new TP4Exo3();
-            glutSetWindowTitle("OpenGL - TP 4 - Exercice 3");
             break;
         case 51:
             Fenetre::actual->exo = new TP5Exo1();
-            glutSetWindowTitle("OpenGL - TP 5 - Exercice 1");
             break;
         case 52:
             Fenetre::actual->exo = new TP5Exo2();
-            glutSetWindowTitle("OpenGL - TP 5 - Exercice 2");
             break;
         case 53:
             Fenetre::actual->exo = new TP5Exo3();
-            glutSetWindowTitle("OpenGL - TP 5 - Exercice 3");
             break;
         case 62:
             Fenetre::actual->exo = new TP6Exo2();
-            glutSetWindowTitle("OpenGL - TP 6 - Exercice 2");
             break;
         case 63:
             Fenetre::actual->exo = new TP6Exo3();
-            glutSetWindowTitle("OpenGL - TP 6 - Exercice 3");
             break;
 
         default:
             Fenetre::actual->exo = new TP1Exo();
-            glutSetWindowTitle("OpenGL - TP 1");
+            Fenetre::actual->tpNum = 1;
+            Fenetre::actual->exoNum = 1;
     }
+
+    std::stringstream win_name;
+    win_name << "OpenGL - TP " << Fenetre::actual->tpNum << " - Exercice " << Fenetre::actual->exoNum;
+    glutSetWindowTitle(win_name.str().c_str());
 }

@@ -31,6 +31,7 @@ private:
     int id;
 
     int menu_main;
+    int tpNum, exoNum;
 
 public:
 

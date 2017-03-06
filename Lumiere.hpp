@@ -22,6 +22,8 @@ public:
 
     void Apply() const;
 
+    void Remove();
+
 private:
 
     static int nb_lights;
