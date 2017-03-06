@@ -17,7 +17,7 @@ const float uiSwitch::color_checked[3] = { 120.f / 255.f, 210.f / 255.f, 65.f / 
 const float uiSwitch::color_unchecked[3] = { 225.f / 255.f, 65.f / 255.f, 65.f / 255.f };
 
 uiSwitch::uiSwitch(const char * text, bool init_state, int x, int y, int w, int h, void (*action)(bool, void *), void * args) :
-    text(text), checked(init_state), width(w), height(h), action(action), args(args)
+    text(text), clicked(false), enter(false), checked(init_state), width(w), height(h), action(action), args(args)
 {
     this->position = Point(x, y, 0);
 }

@@ -37,6 +37,7 @@ class Camera;
 #include "Geometry/Plan.hpp"
 #include "Geometry/Triangle.hpp"
 #include "Geometry/Rectangle.hpp"
+#include "Geometry/Box.hpp"
 
 #include "Geometry/Curve.hpp"
 #include "Geometry/Surface.hpp"

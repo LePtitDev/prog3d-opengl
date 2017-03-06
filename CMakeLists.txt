@@ -40,6 +40,7 @@ set(SOURCE_FILES main.hpp main.cpp
         Geometry/Plan.hpp Geometry/Plan.cpp
         Geometry/Triangle.hpp Geometry/Triangle.cpp
         Geometry/Rectangle.hpp Geometry/Rectangle.cpp
+        Geometry/Box.hpp Geometry/Box.cpp
 
         Geometry/Curve.hpp Geometry/Curve.cpp
         Geometry/Surface.hpp Geometry/Surface.cpp

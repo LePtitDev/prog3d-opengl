@@ -138,7 +138,7 @@ void Fenetre::initPerspective() {
     glLoadIdentity();
 
     // On initialise la caméra en perspective
-    Camera::Perspective(45.0, (double)win_width / (double)win_height, 1.0, 100.0);
+    Camera::Perspective(Camera::FOVY, (double)win_width / (double)win_height, Camera::ZNEAR, Camera::ZFAR);
 
     // Spécifie quelle matrice est la matrice actuelle : Modèle de vue
     glMatrixMode(GL_MODELVIEW);
@@ -165,7 +165,7 @@ void Fenetre::OnDisplay() {
     }
     else {
         // On initialise la caméra en perspective
-        Camera::Perspective(45.0, (double)Fenetre::actual->win_width / (double)Fenetre::actual->win_height, 1.0, 100.0);
+        Camera::Perspective();
     }
 
     Lumiere::Mode3D();
@@ -205,7 +205,7 @@ void Fenetre::OnReshape(int width, int height) {
     }
     else {
         // On initialise la caméra en perspective
-        Camera::Perspective(45.0, (double)width / (double)height, 1.0, 100.0);
+        Camera::Perspective(Camera::GetFOVY(), (double)width / (double)height, Camera::GetZNear(), Camera::GetZFar());
     }
 
     // Spécifie quelle matrice est la matrice actuelle : Modèle de vue

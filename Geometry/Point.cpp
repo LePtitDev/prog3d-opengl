@@ -40,6 +40,10 @@ void Point::Draw() const {
     glEnd();
 }
 
+void Point::Apply() const {
+    glVertex3f(this->x, this->y, this->z);
+}
+
 Point Point::operator+(const Vecteur & v) const {
     return Point(this->x + v.x, this->y + v.y, this->z + v.z);
 }

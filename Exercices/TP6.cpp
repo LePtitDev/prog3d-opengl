@@ -3,7 +3,7 @@
 /****** EXERCICE 2 ******/
 
 TP6Exo2::TP6Exo2() :
-        camera(Point(0.0, 0.0, 15.0)), lumiere(Point(0, 0, 4)), mesh(0), display_projection(false),
+        camera(Point(0.0, 0.0, 15.0)), lumiere(Point(0, 0, 4)), mesh(0), display_projection(false), area_box(Point(-5, -5, -5), Vecteur(10, 0, 0), Vecteur(0, 10, 0), Vecteur(0, 0, 10)),
         bt_buddha("Buddha", 10, 10, 80, 30, TP6Exo2::action_bt_buddha, (void*)this),
         bt_bunny("Bunny", 100, 10, 80, 30, TP6Exo2::action_bt_bunny, (void*)this),
         bt_max("Max", 190, 10, 80, 30, TP6Exo2::action_bt_max, (void*)this),
@@ -29,28 +29,21 @@ TP6Exo2::TP6Exo2() :
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
     this->buddha.Normalize();
-    this->buddha.Scale(50, 50, 50);
-    this->buddha.Translate(0, -7.5, 0);
     this->buddha.color = MeshColor(MeshColor::BRONZE);
     file.Load("Ressources/TP 6/bunny.off");
     this->bunny = file.GetMesh();
-    this->bunny.Scale(50, 50, 50);
-    this->bunny.Translate(1.5, -5, 0);
-    this->bunny.RotateY(M_PI / 2);
     this->bunny.Normalize();
     this->bunny.color = MeshColor(MeshColor::BRASS);
     file.Load("Ressources/TP 6/max.off");
     this->max = file.GetMesh();
-    this->max.Scale(0.03, 0.03, 0.03);
-    this->max.Translate(-0.5, 0, -2);
-    this->max.RotateY(M_PI);
     this->max.Normalize();
     this->max.color = MeshColor(MeshColor::SILVER);
     file.Load("Ressources/TP 6/triceratops.off");
     this->triceratops = file.GetMesh();
-    this->triceratops.RotateY(-M_PI / 2);
     this->triceratops.Normalize();
     this->triceratops.color = MeshColor(MeshColor::PEARL);
+
+    camera.Reposition(this->buddha.GetBox());
 
     this->CPos = camera.GetPosition();
 
@@ -140,18 +133,26 @@ void TP6Exo2::OnMotionUnpressedEvent(int x, int y) {
 
 void TP6Exo2::action_bt_buddha(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
+    exo->camera.Reposition(exo->buddha.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 0;
 }
 void TP6Exo2::action_bt_bunny(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
+    exo->camera.Reposition(exo->bunny.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 1;
 }
 void TP6Exo2::action_bt_max(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
+    exo->camera.Reposition(exo->max.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 2;
 }
 void TP6Exo2::action_bt_triceratops(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
+    exo->camera.Reposition(exo->triceratops.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 3;
 }
 void TP6Exo2::action_sw_poly(bool state, void * args) {
@@ -214,24 +215,17 @@ TP6Exo3::TP6Exo3() :
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
     this->buddha.Normalize();
-    this->buddha.Scale(50, 50, 50);
-    this->buddha.Translate(0, -7.5, 0);
     file.Load("Ressources/TP 6/bunny.off");
     this->bunny = file.GetMesh();
-    this->bunny.Scale(50, 50, 50);
-    this->bunny.Translate(1.5, -5, 0);
-    this->bunny.RotateY(M_PI / 2);
     this->bunny.Normalize();
     file.Load("Ressources/TP 6/max.off");
     this->max = file.GetMesh();
-    this->max.Scale(0.03, 0.03, 0.03);
-    this->max.Translate(-0.5, 0, -2);
-    this->max.RotateY(M_PI);
     this->max.Normalize();
     file.Load("Ressources/TP 6/triceratops.off");
     this->triceratops = file.GetMesh();
-    this->triceratops.RotateY(-M_PI / 2);
     this->triceratops.Normalize();
+    
+    camera.Reposition(this->buddha.GetBox());
 
     Mesh::EnableSmooth();
 }
@@ -292,18 +286,26 @@ void TP6Exo3::OnMotionUnpressedEvent(int x, int y) {
 
 void TP6Exo3::action_bt_buddha(void * args) {
     TP6Exo3 * exo = (TP6Exo3 *)args;
+    exo->camera.Reposition(exo->buddha.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 0;
 }
 void TP6Exo3::action_bt_bunny(void * args) {
     TP6Exo3 * exo = (TP6Exo3 *)args;
+    exo->camera.Reposition(exo->bunny.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 1;
 }
 void TP6Exo3::action_bt_max(void * args) {
     TP6Exo3 * exo = (TP6Exo3 *)args;
+    exo->camera.Reposition(exo->max.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 2;
 }
 void TP6Exo3::action_bt_triceratops(void * args) {
     TP6Exo3 * exo = (TP6Exo3 *)args;
+    exo->camera.Reposition(exo->triceratops.GetBox());
+    exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 3;
 }
 void TP6Exo3::action_sw_poly(bool state, void * args) {

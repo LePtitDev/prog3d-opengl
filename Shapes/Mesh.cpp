@@ -432,6 +432,38 @@ void Mesh::Scale(double x, double y, double z) {
     }
 }
 
+Box Mesh::GetBox() const {
+    double x_min = this->P[0].x, x_max = this->P[0].x, y_min = this->P[0].y, y_max = this->P[0].y, z_min = this->P[0].z, z_max = this->P[0].z;
+    for (unsigned int i = 1, sz = this->P.size(); i < sz; i++) {
+        if (this->P[i].x < x_min) x_min = this->P[i].x;
+        if (this->P[i].x > x_max) x_max = this->P[i].x;
+        if (this->P[i].y < y_min) y_min = this->P[i].y;
+        if (this->P[i].y > y_max) y_max = this->P[i].y;
+        if (this->P[i].z < z_min) z_min = this->P[i].z;
+        if (this->P[i].z > z_max) z_max = this->P[i].z;
+    }
+    Point point(x_min, y_min, z_min);
+    return Box(point, Vecteur(x_max - x_min, 0, 0), Vecteur(0, y_max - y_min, 0), Vecteur(0, 0, z_max - z_min));
+}
+
+void Mesh::Reposition(const Box& b) {
+    Box actual = this->GetBox();
+    double dx = b.GetVector(0).x / actual.GetVector(0).x;
+    double dy = b.GetVector(1).y / actual.GetVector(1).y;
+    double dz = b.GetVector(2).z / actual.GetVector(2).z;
+    double min_value = (dx < dy) ? dx : dy; min_value = (min_value < dz) ? min_value : dz;
+    this->Scale(min_value, min_value, min_value);
+    actual = this->GetBox();
+    dx = b.GetPoint(0).x - actual.GetPoint(0).x;
+    dy = b.GetPoint(0).y - actual.GetPoint(0).y;
+    dz = b.GetPoint(0).z - actual.GetPoint(0).z;
+    double diff_x = b.GetVector(0).x - actual.GetVector(0).x;
+    double diff_y = b.GetVector(1).y - actual.GetVector(1).y;
+    double diff_z = b.GetVector(2).z - actual.GetVector(2).z;
+    this->Translate(dx + diff_x / 2, dy + diff_y / 2, dz + diff_z / 2);
+    actual = this->GetBox();
+}
+
 void Mesh::Draw() const {
     glPolygonMode(GL_FRONT_AND_BACK, this->polygon_mode);
     glShadeModel(this->shade_mode);

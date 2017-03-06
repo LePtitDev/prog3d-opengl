@@ -21,6 +21,8 @@ public:
 
     void Draw() const;
 
+    void Apply() const;
+
     Point operator+(const Vecteur&) const;
     Point operator-(const Vecteur&) const;
 

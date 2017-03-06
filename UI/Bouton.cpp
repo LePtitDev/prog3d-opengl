@@ -12,7 +12,7 @@ const float uiBouton::color_exit_3[3] = { 213.f / 255.f, 217.f / 255.f, 218.f / 
 const float uiBouton::color_clic_3[3] = { 156.f / 255.f, 210.f / 255.f, 238.f / 255.f };
 
 uiBouton::uiBouton(const char * text, int x, int y, int width, int height, void (*action)(void*), void * args) :
-    text(text), width(width), height(height), action(action), args(args)
+    text(text), width(width), height(height), action(action), args(args), clicked(false), enter(false)
 {
     this->position = Point(x, y, 0);
 }

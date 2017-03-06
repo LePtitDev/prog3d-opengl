@@ -17,12 +17,19 @@ private:
 
 public:
 
+    static const double FOVY, ASPECT, ZNEAR, ZFAR;
+
+    static double GetFOVY();
+    static double GetAspect();
+    static double GetZNear();
+    static double GetZFar();
+    static void Perspective();
     static void Perspective(double, double, double, double);
 
 private:
 
-    Point saved_pos;
-    bool left_click;
+    Point saved_pos, target;
+    bool left_click, to_target;
     int pos_x, pos_y;
 
 public:
@@ -44,6 +51,13 @@ public:
 
     void OnMouseEvent(int, int, int, int);
     void OnMotionPressedEvent(int, int);
+
+    void ToOrigin();
+    void ToTarget();
+
+    void SetTarget(const Point&);
+    Point GetTarget() const;
+    void Reposition(const Box&);
 
     void Apply() const;
 

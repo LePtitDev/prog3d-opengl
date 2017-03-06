@@ -17,6 +17,7 @@ class TP6Exo2 : public Exercice {
 
     int mesh;
     Mesh buddha, bunny, max, triceratops;
+    Box area_box;
 
     uiLayout layout;
     uiBouton bt_buddha, bt_bunny, bt_max, bt_triceratops;

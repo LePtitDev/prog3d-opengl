@@ -91,6 +91,10 @@ public:
     void RotateZ(double);
     void Scale(double, double, double);
 
+    Box GetBox() const;
+
+    void Reposition(const Box&);
+
     void Draw() const;
     void DrawFront() const;
     void DrawBack() const;
