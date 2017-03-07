@@ -24,8 +24,6 @@ TP6Exo2::TP6Exo2() :
     layout.AddWidget(sw_projection);
     layout.AddWidget(fps_count);
 
-    this->nearR = camera.GetNearViewport();
-
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
     this->buddha.color = MeshColor(MeshColor::BRONZE);
@@ -39,10 +37,11 @@ TP6Exo2::TP6Exo2() :
     this->triceratops = file.GetMesh();
     this->triceratops.color = MeshColor(MeshColor::PEARL);
 
-    camera.Reposition(this->buddha.GetBox());
-    lumiere.pos = camera.pos;
+    this->camera.Reposition(this->buddha.GetBox());
+    this->lumiere.pos = this->camera.pos;
 
-    this->CPos = camera.GetPosition();
+    this->CPos = this->camera.GetPosition();
+    this->nearR = this->camera.GetNearViewport();
 
     Mesh::EnableSmooth();
 }
@@ -133,24 +132,32 @@ void TP6Exo2::action_bt_buddha(void * args) {
     exo->camera.Reposition(exo->buddha.GetBox());
     exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 0;
+    exo->CPos = exo->camera.GetPosition();
+    exo->nearR = exo->camera.GetNearViewport();
 }
 void TP6Exo2::action_bt_bunny(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
     exo->camera.Reposition(exo->bunny.GetBox());
     exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 1;
+    exo->CPos = exo->camera.GetPosition();
+    exo->nearR = exo->camera.GetNearViewport();
 }
 void TP6Exo2::action_bt_max(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
     exo->camera.Reposition(exo->max.GetBox());
     exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 2;
+    exo->CPos = exo->camera.GetPosition();
+    exo->nearR = exo->camera.GetNearViewport();
 }
 void TP6Exo2::action_bt_triceratops(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
     exo->camera.Reposition(exo->triceratops.GetBox());
     exo->lumiere.pos = exo->camera.pos;
     exo->mesh = 3;
+    exo->CPos = exo->camera.GetPosition();
+    exo->nearR = exo->camera.GetNearViewport();
 }
 void TP6Exo2::action_sw_poly(bool state, void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
