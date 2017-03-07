@@ -22,7 +22,11 @@ public:
 
     std::vector<Point> Ray(const Droite&) const;
 
+    std::vector<Point> RayOnScreen(const Camera&, int, int) const;
+
     static std::vector<Point> Ray(const Droite&, const Mesh&);
+
+    static std::vector<Point> RayOnScreen(const Camera&, int, int, const Mesh&);
 
 private:
 

@@ -34,7 +34,31 @@ std::vector<Point> Raycaster::Ray(const Droite & d) const {
     return res;
 }
 
+std::vector<Point> Raycaster::RayOnScreen(const Camera& camera, int x, int y) const {
+    std::vector<Point> res, tmp;
+    for (unsigned int i = 0, sz = this->mesh.size(); i < sz; i++) {
+        tmp.clear();
+        tmp = Raycaster::RayOnScreen(camera, x, y, *(this->mesh[i]));
+        for (unsigned int j = 0, sz2 = tmp.size(); j < sz2; j++) {
+            res.push_back(tmp[j]);
+        }
+    }
+    return res;
+}
+
 std::vector<Point> Raycaster::Ray(const Droite & d, const Mesh & m) {
+    Point tmp;
+    std::vector<Point> res;
+    for (unsigned int i = 0, sz = m.TriangleNumber(); i < sz; i++) {
+        if (Raycaster::Ray(d, m.GetTriangle(i), tmp))
+            res.push_back(tmp);
+    }
+    return res;
+}
+
+std::vector<Point> RayOnScreen(const Camera& camera, int x, int y, const Mesh& m) {
+    RRectangle viewport = camera.GetNearViewport();
+
     Point tmp;
     std::vector<Point> res;
     for (unsigned int i = 0, sz = m.TriangleNumber(); i < sz; i++) {
