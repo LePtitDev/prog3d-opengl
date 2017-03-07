@@ -22,12 +22,10 @@ uiSwitch::uiSwitch(const char * text, bool init_state, int x, int y, int w, int 
     this->position = Point(x, y, 0);
 }
 
-void uiSwitch::SetWidth(int) {}
 int uiSwitch::GetWidth() const {
     return this->width;
 }
 
-void uiSwitch::SetHeight(int) {}
 int uiSwitch::GetHeight() const {
     return this->height;
 }
@@ -111,10 +109,6 @@ void uiSwitch::OnMouseDown(int button, int x, int y) {
     }
 }
 
-void uiSwitch::OnScrollUp(int, int) {}
-
-void uiSwitch::OnScrollDown(int, int) {}
-
 void uiSwitch::OnMouseMotion(int button, bool click, int x, int y) {
     int left = this->position.x, top = this->position.y + this->height / 2 - uiSwitch::dim_height / 2,
             right = left + uiSwitch::dim_width, bottom = top + uiSwitch::dim_height;
@@ -125,5 +119,3 @@ void uiSwitch::OnMouseMotion(int button, bool click, int x, int y) {
         this->enter = false;
     }
 }
-
-void uiSwitch::OnKeyDown(unsigned char) {}

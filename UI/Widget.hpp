@@ -12,28 +12,28 @@ public:
 
     Point position;
 
-    virtual void SetWidth(int) = 0;
-    virtual int GetWidth() const = 0;
-    virtual void SetHeight(int) = 0;
-    virtual int GetHeight() const = 0;
+    virtual void SetWidth(int);
+    virtual int GetWidth() const;
+    virtual void SetHeight(int);
+    virtual int GetHeight() const;
 
-    virtual bool MouseInside(int, int) const = 0;
+    virtual bool MouseInside(int, int) const;
 
-    virtual void Update() = 0;
+    virtual void Update();
 
     virtual void Draw() const = 0;
 
-    virtual void OnMouseUp(int, int, int) = 0;
+    virtual void OnMouseUp(int, int, int);
 
-    virtual void OnMouseDown(int, int, int) = 0;
+    virtual void OnMouseDown(int, int, int);
 
-    virtual void OnScrollUp(int, int) = 0;
+    virtual void OnScrollUp(int, int);
 
-    virtual void OnScrollDown(int, int) = 0;
+    virtual void OnScrollDown(int, int);
 
-    virtual void OnMouseMotion(int, bool, int, int) = 0;
+    virtual void OnMouseMotion(int, bool, int, int);
 
-    virtual void OnKeyDown(unsigned char) = 0;
+    virtual void OnKeyDown(unsigned char);
 
 };
 

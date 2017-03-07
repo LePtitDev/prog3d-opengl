@@ -102,6 +102,17 @@ void TP6Exo2::OnDraw3D() {
         }
         Lumiere::EnableLights();
     }
+
+    if (this->inters.size() > 0) {
+        Lumiere::DisableLights();
+        glBegin(GL_POINTS);
+        glColor3f(1, 0, 0);
+        for (unsigned i = 0, sz = this->inters.size(); i < sz; i++) {
+            this->inters[i].Apply();
+        }
+        glEnd();
+        Lumiere::EnableLights();
+    }
 }
 void TP6Exo2::OnDraw2D() {
     this->layout.OnDisplay();
@@ -114,6 +125,22 @@ void TP6Exo2::OnMouseEvent(int button, int state, int x, int y) {
         camera.OnMouseEvent(button, state, x, y);
     lumiere.pos = camera.pos;
     this->layout.OnMouseEvent(button, state, x, y);
+    if (button == 1 && state == 0) {
+        switch (this->mesh) {
+            case 0:
+                this->inters = Raycaster::RayOnScreen(this->camera, x, y, this->buddha);
+                break;
+            case 1:
+                this->inters = Raycaster::RayOnScreen(this->camera, x, y, this->bunny);
+                break;
+            case 2:
+                this->inters = Raycaster::RayOnScreen(this->camera, x, y, this->max);
+                break;
+            case 3:
+                this->inters = Raycaster::RayOnScreen(this->camera, x, y, this->triceratops);
+                break;
+        }
+    }
 }
 
 void TP6Exo2::OnMotionPressedEvent(int x, int y) {
@@ -134,6 +161,7 @@ void TP6Exo2::action_bt_buddha(void * args) {
     exo->mesh = 0;
     exo->CPos = exo->camera.GetPosition();
     exo->nearR = exo->camera.GetNearViewport();
+    exo->inters.clear();
 }
 void TP6Exo2::action_bt_bunny(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
@@ -142,6 +170,7 @@ void TP6Exo2::action_bt_bunny(void * args) {
     exo->mesh = 1;
     exo->CPos = exo->camera.GetPosition();
     exo->nearR = exo->camera.GetNearViewport();
+    exo->inters.clear();
 }
 void TP6Exo2::action_bt_max(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
@@ -150,6 +179,7 @@ void TP6Exo2::action_bt_max(void * args) {
     exo->mesh = 2;
     exo->CPos = exo->camera.GetPosition();
     exo->nearR = exo->camera.GetNearViewport();
+    exo->inters.clear();
 }
 void TP6Exo2::action_bt_triceratops(void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;
@@ -158,6 +188,7 @@ void TP6Exo2::action_bt_triceratops(void * args) {
     exo->mesh = 3;
     exo->CPos = exo->camera.GetPosition();
     exo->nearR = exo->camera.GetNearViewport();
+    exo->inters.clear();
 }
 void TP6Exo2::action_sw_poly(bool state, void * args) {
     TP6Exo2 * exo = (TP6Exo2 *)args;

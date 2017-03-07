@@ -61,11 +61,12 @@ set(SOURCE_FILES main.hpp main.cpp
         Tools/Timer.hpp Tools/Timer.cpp
         Tools/Color.hpp Tools/Color.cpp
 
-        UI/Widget.hpp
+        UI/Widget.hpp UI/Widget.cpp
         UI/Bouton.hpp UI/Bouton.cpp
         UI/Switch.hpp UI/Switch.cpp
         UI/GraphFIFO.hpp UI/GraphFIFO.cpp
         UI/FPS_Counter.hpp UI/FPS_Counter.cpp
+        UI/Tab.hpp UI/Tab.cpp
         UI/Layout.hpp UI/Layout.cpp
 
         Exercices/Exercice.hpp

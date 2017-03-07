@@ -13,12 +13,10 @@ void uiGraphFIFO::PushValue(double v) {
     this->index = (this->index + 1) % this->max_values;
 }
 
-void uiGraphFIFO::SetWidth(int) {}
 int uiGraphFIFO::GetWidth() const {
     return this->width;
 }
 
-void uiGraphFIFO::SetHeight(int) {}
 int uiGraphFIFO::GetHeight() const {
     return this->height;
 }
@@ -27,8 +25,6 @@ bool uiGraphFIFO::MouseInside(int x, int y) const {
     return (this->position.x <= x && x <= this->position.x + this->width &&
             this->position.y <= y && y <= this->position.y + this->height);
 }
-
-void uiGraphFIFO::Update() {}
 
 void uiGraphFIFO::Draw() const {
     int left = this->position.x, top = Fenetre::Actual().GetHeight() - this->position.y,
@@ -94,15 +90,3 @@ void uiGraphFIFO::Draw() const {
         glVertex2i(left, top);
     glEnd();
 }
-
-void uiGraphFIFO::OnMouseUp(int, int, int) {}
-
-void uiGraphFIFO::OnMouseDown(int, int, int) {}
-
-void uiGraphFIFO::OnScrollUp(int, int) {}
-
-void uiGraphFIFO::OnScrollDown(int, int) {}
-
-void uiGraphFIFO::OnMouseMotion(int, bool, int, int) {}
-
-void uiGraphFIFO::OnKeyDown(unsigned char) {}

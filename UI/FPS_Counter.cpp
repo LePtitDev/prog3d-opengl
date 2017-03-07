@@ -9,12 +9,10 @@ uiFPS_Counter::uiFPS_Counter(int x, int y, int w, int h, const uColor & color) :
     timer.Start();
 }
 
-void uiFPS_Counter::SetWidth(int) {}
 int uiFPS_Counter::GetWidth() const {
     return this->width;
 }
 
-void uiFPS_Counter::SetHeight(int) {}
 int uiFPS_Counter::GetHeight() const {
     return this->height;
 }
@@ -51,15 +49,3 @@ void uiFPS_Counter::Draw() const {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
     }
 }
-
-void uiFPS_Counter::OnMouseUp(int, int, int) {}
-
-void uiFPS_Counter::OnMouseDown(int, int, int) {}
-
-void uiFPS_Counter::OnScrollUp(int, int) {}
-
-void uiFPS_Counter::OnScrollDown(int, int) {}
-
-void uiFPS_Counter::OnMouseMotion(int button, bool click, int x, int y) {}
-
-void uiFPS_Counter::OnKeyDown(unsigned char) {}

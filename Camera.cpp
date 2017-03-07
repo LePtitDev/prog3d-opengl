@@ -61,7 +61,7 @@ const Point & Camera::GetPosition() const {
     return this->pos;
 }
 
-RRectangle Camera::GetNearViewport() {
+RRectangle Camera::GetNearViewport() const {
     double n_height_2 = tan((Camera::fovy * M_PI) / 360.0), n_width_2 = Camera::aspect * n_height_2;
     Vecteur v_near = Vecteur::VectorByPoints(this->pos, this->GetTarget()), v_top(0, 1, 0);
     v_near.Normalize();
@@ -71,7 +71,7 @@ RRectangle Camera::GetNearViewport() {
     return RRectangle(this->pos + v_near - v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear - v_height * Camera::zNear, this->pos + v_near + v_width * Camera::zNear + v_height * Camera::zNear);
 }
 
-RRectangle Camera::GetFarViewport() {
+RRectangle Camera::GetFarViewport() const {
     double n_height_2 = tan((Camera::fovy * M_PI) / 360.0), n_width_2 = Camera::aspect * n_height_2;
     Vecteur v_far = Vecteur::VectorByPoints(this->pos, this->GetTarget()), v_top(0, 1, 0);
     v_far.Normalize();
@@ -81,7 +81,7 @@ RRectangle Camera::GetFarViewport() {
     return RRectangle(this->pos + v_far - v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar - v_height * Camera::zFar, this->pos + v_far + v_width * Camera::zFar + v_height * Camera::zFar);
 }
 
-std::array<RRectangle, 2> Camera::GetViewports() {
+std::array<RRectangle, 2> Camera::GetViewports() const {
     std::array<RRectangle, 2> res;
     res[0] = Camera::GetNearViewport();
     res[1] = Camera::GetFarViewport();

@@ -56,9 +56,11 @@ std::vector<Point> Raycaster::Ray(const Droite & d, const Mesh & m) {
     return res;
 }
 
-std::vector<Point> RayOnScreen(const Camera& camera, int x, int y, const Mesh& m) {
+std::vector<Point> Raycaster::RayOnScreen(const Camera& camera, int x, int y, const Mesh& m) {
     RRectangle viewport = camera.GetNearViewport();
-
+    Vecteur U = Vecteur::VectorByPoints(viewport.GetA(), viewport.GetB()) * ((double)x / (double)Fenetre::Actual().GetWidth()),
+            V = Vecteur::VectorByPoints(viewport.GetA(), viewport.GetD()) * ((double)y / (double)Fenetre::Actual().GetHeight());
+    Droite d(camera.GetPosition(), Vecteur::VectorByPoints(camera.GetPosition(), viewport.GetA() + U + V));
     Point tmp;
     std::vector<Point> res;
     for (unsigned int i = 0, sz = m.TriangleNumber(); i < sz; i++) {

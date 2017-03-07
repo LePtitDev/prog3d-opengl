@@ -41,9 +41,9 @@ public:
     Camera(const Camera&);
 
     const Point& GetPosition() const;
-    RRectangle GetNearViewport();
-    RRectangle GetFarViewport();
-    std::array<RRectangle, 2> GetViewports();
+    RRectangle GetNearViewport() const;
+    RRectangle GetFarViewport() const;
+    std::array<RRectangle, 2> GetViewports() const;
 
     void RotateLatitude(double);
     void RotateLongitude(double);

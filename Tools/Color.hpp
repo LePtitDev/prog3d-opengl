@@ -10,7 +10,22 @@ class uColor {
 
 public:
 
-    static uColor WHITE, GREY, BLACK, RED, GREEN, BLUE, CYAN, MAGENTA, YELLOW;
+    static uColor   WHITE,
+                    GREY,
+                    BLACK,
+                    RED,
+                    GREEN,
+                    BLUE,
+                    CYAN,
+                    MAGENTA,
+                    YELLOW,
+                    PINK,
+                    ORANGE,
+                    LIGHT_CORAL,
+                    LIGHT_GREEN,
+                    ROYAL_BLUE,
+                    BROWN,
+                    BEIGE;
 
     unsigned char r, g, b, a;
 

@@ -26,6 +26,8 @@ class TP6Exo2 : public Exercice {
 
     bool display_projection;
 
+    std::vector<Point> inters;
+
 public:
 
     TP6Exo2();

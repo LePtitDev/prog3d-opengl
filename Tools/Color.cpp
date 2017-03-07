@@ -9,6 +9,13 @@ uColor uColor::BLUE(0, 0, 255);
 uColor uColor::CYAN(0, 255, 255);
 uColor uColor::MAGENTA(255, 0, 255);
 uColor uColor::YELLOW(255, 255, 0);
+uColor uColor::PINK(255, 102, 204);
+uColor uColor::ORANGE(255, 128, 0);
+uColor uColor::LIGHT_CORAL(255, 128, 128);
+uColor uColor::LIGHT_GREEN(128, 255, 128);
+uColor uColor::ROYAL_BLUE(0, 128, 255);
+uColor uColor::BROWN(128, 64, 0);
+uColor uColor::BEIGE(255, 191, 128);
 
 uColor::uColor() :
     r(0), g(0), b(0), a(255)

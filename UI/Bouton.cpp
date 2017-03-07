@@ -17,12 +17,10 @@ uiBouton::uiBouton(const char * text, int x, int y, int width, int height, void 
     this->position = Point(x, y, 0);
 }
 
-void uiBouton::SetWidth(int) {}
 int uiBouton::GetWidth() const {
     return this->width;
 }
 
-void uiBouton::SetHeight(int) {}
 int uiBouton::GetHeight() const {
     return this->height;
 }
@@ -31,8 +29,6 @@ bool uiBouton::MouseInside(int x, int y) const {
     return (this->position.x <= x && x <= this->position.x + this->width &&
             this->position.y <= y && y <= this->position.y + this->height);
 }
-
-void uiBouton::Update() {}
 
 void uiBouton::Draw() const {
     int left = this->position.x, top = Fenetre::Actual().GetHeight() - this->position.y,
@@ -76,15 +72,9 @@ void uiBouton::OnMouseDown(int button, int x, int y) {
         this->clicked = true;
 }
 
-void uiBouton::OnScrollUp(int, int) {}
-
-void uiBouton::OnScrollDown(int, int) {}
-
 void uiBouton::OnMouseMotion(int button, bool click, int x, int y) {
     if (this->MouseInside(x, y))
         this->enter = true;
     else
         this->enter = false;
 }
-
-void uiBouton::OnKeyDown(unsigned char) {}

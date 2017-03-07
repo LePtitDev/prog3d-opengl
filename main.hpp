@@ -69,6 +69,7 @@ class Camera;
 #include "UI/Switch.hpp"
 #include "UI/GraphFIFO.hpp"
 #include "UI/FPS_Counter.hpp"
+#include "UI/Tab.hpp"
 #include "UI/Layout.hpp"
 
 //EXERCICES

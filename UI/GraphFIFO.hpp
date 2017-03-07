@@ -21,28 +21,12 @@ public:
 
     void PushValue(double);
 
-    void SetWidth(int);
     int GetWidth() const;
-    void SetHeight(int);
     int GetHeight() const;
 
     bool MouseInside(int, int) const;
 
-    void Update();
-
     void Draw() const;
-
-    void OnMouseUp(int, int, int);
-
-    void OnMouseDown(int, int, int);
-
-    void OnScrollUp(int, int);
-
-    void OnScrollDown(int, int);
-
-    void OnMouseMotion(int, bool, int, int);
-
-    void OnKeyDown(unsigned char);
 
 };
 

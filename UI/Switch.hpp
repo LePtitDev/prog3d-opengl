@@ -33,9 +33,7 @@ public:
 
     uiSwitch(const char *, bool, int, int, int, int, void(*)(bool, void*), void*);
 
-    void SetWidth(int);
     int GetWidth() const;
-    void SetHeight(int);
     int GetHeight() const;
 
     bool MouseInside(int, int) const;
@@ -48,13 +46,7 @@ public:
 
     void OnMouseDown(int, int, int);
 
-    void OnScrollUp(int, int);
-
-    void OnScrollDown(int, int);
-
     void OnMouseMotion(int, bool, int, int);
-
-    void OnKeyDown(unsigned char);
 
 };
 

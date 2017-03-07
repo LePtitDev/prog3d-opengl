@@ -29,14 +29,10 @@ public:
 
     uiBouton(const char *, int, int, int, int, void(*)(void*), void *);
 
-    void SetWidth(int);
     int GetWidth() const;
-    void SetHeight(int);
     int GetHeight() const;
 
     bool MouseInside(int, int) const;
-
-    void Update();
 
     void Draw() const;
 
@@ -44,13 +40,7 @@ public:
 
     void OnMouseDown(int, int, int);
 
-    void OnScrollUp(int, int);
-
-    void OnScrollDown(int, int);
-
     void OnMouseMotion(int, bool, int, int);
-
-    void OnKeyDown(unsigned char);
 
 };
 
