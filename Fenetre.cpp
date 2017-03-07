@@ -5,6 +5,7 @@ Fenetre * Fenetre::actual = nullptr;
 void Fenetre::InitGL() {
     // Active les tests de profondeur
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_NORMALIZE);
 }
 
 Fenetre& Fenetre::Actual() {

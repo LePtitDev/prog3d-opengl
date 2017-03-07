@@ -28,19 +28,15 @@ TP6Exo2::TP6Exo2() :
 
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
-    this->buddha.Normalize();
     this->buddha.color = MeshColor(MeshColor::BRONZE);
     file.Load("Ressources/TP 6/bunny.off");
     this->bunny = file.GetMesh();
-    this->bunny.Normalize();
     this->bunny.color = MeshColor(MeshColor::BRASS);
     file.Load("Ressources/TP 6/max.off");
     this->max = file.GetMesh();
-    this->max.Normalize();
     this->max.color = MeshColor(MeshColor::SILVER);
     file.Load("Ressources/TP 6/triceratops.off");
     this->triceratops = file.GetMesh();
-    this->triceratops.Normalize();
     this->triceratops.color = MeshColor(MeshColor::PEARL);
 
     camera.Reposition(this->buddha.GetBox());
@@ -215,16 +211,12 @@ TP6Exo3::TP6Exo3() :
 
     FileOFF file("Ressources/TP 6/buddha.off");
     this->buddha = file.GetMesh();
-    this->buddha.Normalize();
     file.Load("Ressources/TP 6/bunny.off");
     this->bunny = file.GetMesh();
-    this->bunny.Normalize();
     file.Load("Ressources/TP 6/max.off");
     this->max = file.GetMesh();
-    this->max.Normalize();
     file.Load("Ressources/TP 6/triceratops.off");
     this->triceratops = file.GetMesh();
-    this->triceratops.Normalize();
     
     camera.Reposition(this->buddha.GetBox());
 
