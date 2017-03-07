@@ -10,7 +10,7 @@ class uTimer {
 
     bool active;
     double current_time;
-    clock_t start;
+    std::chrono::steady_clock::time_point start;
 
 public:
 
