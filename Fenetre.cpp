@@ -232,14 +232,7 @@ void Fenetre::OnMotionUnpressedEvent(int x, int y) {
 }
 
 void Fenetre::SelectExo(int index) {
-    if (Fenetre::actual->tpNum == 6) {
-        if (Fenetre::actual->exoNum == 2)
-            delete ((TP6Exo2 *)Fenetre::actual->exo);
-        else
-            delete ((TP6Exo3 *)Fenetre::actual->exo);
-    }
-    else
-        delete Fenetre::actual->exo;
+    Fenetre::DestroyExo();
 
     Fenetre::actual->tpNum = index / 10;
     Fenetre::actual->exoNum = index % 10;
@@ -300,4 +293,77 @@ void Fenetre::SelectExo(int index) {
     std::stringstream win_name;
     win_name << "OpenGL - TP " << Fenetre::actual->tpNum << " - Exercice " << Fenetre::actual->exoNum;
     glutSetWindowTitle(win_name.str().c_str());
+}
+
+void Fenetre::DestroyExo() {
+    switch (Fenetre::actual->tpNum) {
+        case 1:
+            delete ((TP1Exo *)Fenetre::actual->exo);
+            break;
+        case 2:
+            switch (Fenetre::actual->exoNum) {
+                case 1:
+                    delete ((TP2Exo1 *)Fenetre::actual->exo);
+                    break;
+                case 2:
+                    delete ((TP2Exo2 *)Fenetre::actual->exo);
+                    break;
+                case 3:
+                    delete ((TP2Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+        case 3:
+            switch (Fenetre::actual->exoNum) {
+                case 1:
+                    delete ((TP3Exo1 *)Fenetre::actual->exo);
+                    break;
+                case 2:
+                    delete ((TP3Exo2 *)Fenetre::actual->exo);
+                    break;
+                case 3:
+                    delete ((TP3Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+        case 4:
+            switch (Fenetre::actual->exoNum) {
+                case 1:
+                    delete ((TP4Exo1 *)Fenetre::actual->exo);
+                    break;
+                case 2:
+                    delete ((TP4Exo2 *)Fenetre::actual->exo);
+                    break;
+                case 3:
+                    delete ((TP4Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+        case 5:
+            switch (Fenetre::actual->exoNum) {
+                case 1:
+                    delete ((TP5Exo1 *)Fenetre::actual->exo);
+                    break;
+                case 2:
+                    delete ((TP5Exo2 *)Fenetre::actual->exo);
+                    break;
+                case 3:
+                    delete ((TP5Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+        case 6:
+            switch (Fenetre::actual->exoNum) {
+                case 2:
+                    delete ((TP6Exo2 *)Fenetre::actual->exo);
+                    break;
+                case 3:
+                    delete ((TP6Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+
+        default:
+            delete Fenetre::actual->exo;
+    }
 }

@@ -64,6 +64,8 @@ private:
 
     static void SelectExo(int);
 
+    static void DestroyExo();
+
 };
 
 #endif //PROG3D_FENETRE_HPP
