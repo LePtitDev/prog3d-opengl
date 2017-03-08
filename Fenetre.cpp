@@ -6,6 +6,7 @@ void Fenetre::InitGL() {
     // Active les tests de profondeur
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 Fenetre& Fenetre::Actual() {
@@ -89,6 +90,9 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     glutAddMenuEntry(" Exercice 2 ", 62);
     glutAddMenuEntry(" Exercice 3 ", 63);
 
+    int menu7 = glutCreateMenu(Fenetre::SelectExo);
+    glutAddMenuEntry(" Exercice 1 ", 71);
+
     this->menu_main = glutCreateMenu(Fenetre::SelectExo);
 
     glutAddMenuEntry(" TP 1 ", 11);
@@ -97,6 +101,7 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     glutAddSubMenu(" TP 4 ", menu4);
     glutAddSubMenu(" TP 5 ", menu5);
     glutAddSubMenu(" TP 6 ", menu6);
+    glutAddSubMenu(" TP 7 ", menu7);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -283,6 +288,9 @@ void Fenetre::SelectExo(int index) {
         case 63:
             Fenetre::actual->exo = new TP6Exo3();
             break;
+        case 71:
+            Fenetre::actual->exo = new TP7Exo1();
+            break;
 
         default:
             Fenetre::actual->exo = new TP1Exo();
@@ -359,6 +367,13 @@ void Fenetre::DestroyExo() {
                     break;
                 case 3:
                     delete ((TP6Exo3 *)Fenetre::actual->exo);
+                    break;
+            }
+            break;
+        case 7:
+            switch (Fenetre::actual->exoNum) {
+                case 1:
+                    delete ((TP7Exo1 *)Fenetre::actual->exo);
                     break;
             }
             break;

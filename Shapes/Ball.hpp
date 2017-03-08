@@ -25,6 +25,8 @@ public:
 
     void Draw();
 
+    Mesh GetMesh(unsigned int);
+
 };
 
 #endif //PROG3D_BALL_HPP

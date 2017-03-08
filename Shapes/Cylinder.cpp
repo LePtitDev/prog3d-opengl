@@ -56,3 +56,46 @@ void Cylinder::Draw() {
     }
     glEnd();
 }
+
+Mesh Cylinder::GetMesh(unsigned int nbU, unsigned int nbV) const {
+    Mesh mesh;
+    Vecteur vt(this->v); vt.Normalize();
+    Vecteur v1(cos(vt.x), cos(vt.y), cos(vt.z)), v2; v1 = vt.GetVectoriel(v1);
+    v2 = vt.GetVectoriel(v1);
+    v1.Normalize(); v1 = v1 * this->rayon;
+    v2.Normalize(); v2 = v2 * this->rayon;
+    Point center = this->p + this->v, tmp_center, center2 = this->p + (-this->v);
+    double u, v;
+    for (unsigned int j = 0; j < nbV; j++) {
+        v = ((double)j / (double)(nbV - 1)) * 2;
+        tmp_center = center - this->v * v;
+        for (unsigned int i = 0; i < nbU; i++) {
+            u = ((double)i / (double)(nbU - 1)) * M_PI * 2.0;
+            mesh.PushPoint(tmp_center + (v1 * cos(u) + v2 * sin(u)));
+        }
+    }
+    mesh.PushPoint(center);
+    mesh.PushPoint(center2);
+    for (unsigned int j = 1; j < nbV; j++) {
+        for (unsigned int i = 0; i < nbU - 1; i++) {
+            unsigned int vertex[4] = {
+                (j - 1) * nbU + i,
+                (j - 1) * nbU + i + 1,
+                j * nbU + i,
+                j * nbU + i + 1
+            };
+            mesh.PushTriangle(vertex[0], vertex[2], vertex[1]);
+            mesh.PushTriangle(vertex[1], vertex[2], vertex[3]);
+        }
+        mesh.PushTriangle((j - 1) * nbU, (j - 1) * nbU + nbU - 1, (j + 1) * nbU - 1);
+        mesh.PushTriangle((j - 1) * nbU, (j + 1) * nbU - 1, j * nbU);
+    }
+    unsigned int pos_center_1 = mesh.PointNumber() - 2, pos_last_circle = pos_center_1 - nbU;
+    for (unsigned int i = 1; i < nbU; i++) {
+        mesh.PushTriangle(pos_center_1, i - 1, i);
+        mesh.PushTriangle(pos_center_1 + 1, pos_last_circle + i, pos_last_circle + i - 1);
+    }
+    mesh.PushTriangle(pos_center_1, nbU - 1, 0);
+    mesh.PushTriangle(pos_center_1 + 1, pos_last_circle, pos_center_1 - 1);
+    return mesh;
+}

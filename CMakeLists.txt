@@ -69,13 +69,14 @@ set(SOURCE_FILES main.hpp main.cpp
         UI/Tab.hpp UI/Tab.cpp
         UI/Layout.hpp UI/Layout.cpp
 
-        Exercices/Exercice.hpp
+        Exercices/Exercice.hpp Exercices/Exercice.cpp
         Exercices/TP1.hpp Exercices/TP1.cpp
         Exercices/TP2.hpp Exercices/TP2.cpp
         Exercices/TP3.hpp Exercices/TP3.cpp
         Exercices/TP4.hpp Exercices/TP4.cpp
         Exercices/TP5.hpp Exercices/TP5.cpp
-        Exercices/TP6.hpp Exercices/TP6.cpp)
+        Exercices/TP6.hpp Exercices/TP6.cpp
+        Exercices/TP7.hpp Exercices/TP7.cpp)
 
 add_executable(Prog3D ${SOURCE_FILES})
 

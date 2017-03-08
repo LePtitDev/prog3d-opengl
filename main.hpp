@@ -27,6 +27,8 @@ class RRectangle;
 class Curve;
 class Surface;
 
+class Mesh;
+
 class Camera;
 
 //GEOMETRY
@@ -81,6 +83,7 @@ class Camera;
 #include "Exercices/TP4.hpp"
 #include "Exercices/TP5.hpp"
 #include "Exercices/TP6.hpp"
+#include "Exercices/TP7.hpp"
 
 //ROOT
 #include "Fenetre.hpp"

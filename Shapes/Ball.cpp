@@ -38,3 +38,39 @@ bool Ball::Inside(double x, double y, double z) {
 void Ball::Draw() {
     this->surface.Draw();
 }
+
+Mesh Ball::GetMesh(unsigned int n) {
+    Mesh mesh;
+    double teta, phi;
+    for (unsigned int i = 1; i < n - 1; i++) {
+        phi = ((double)i / (double)(n - 1)) * M_PI;
+        for (unsigned int j = 0; j < n; j++) {
+            teta = ((double)j / (double)(n - 1)) * 2.0 * M_PI;
+            mesh.PushPoint(Point(this->r * sin(phi) * cos(teta) + this->p.x, this->r * cos(phi) + this->p.y, this->r * sin(phi) * sin(teta) + this->p.z));
+        }
+    }
+    mesh.PushPoint(this->p + Vecteur(0, 1, 0) * this->r);
+    mesh.PushPoint(this->p + Vecteur(0, -1, 0) * this->r);
+    for (unsigned int i = 1; i < n - 2; i++) {
+        for (unsigned int j = 1; j < n - 1; j++) {
+            unsigned int vertex[4] = {
+                (i - 1) * n + j,
+                (i - 1) * n + j + 1,
+                i * n + j,
+                i * n + j + 1
+            };
+            mesh.PushTriangle(vertex[0], vertex[1], vertex[2]);
+            mesh.PushTriangle(vertex[1], vertex[3], vertex[2]);
+        }
+        mesh.PushTriangle((i - 1) * n, (i - 1) * n + 1, (i + 1) * n - 1);
+        mesh.PushTriangle((i - 1) * n + 1, i * n + 1, (i + 1) * n - 1);
+    }
+    unsigned int pos_center_1 = mesh.PointNumber() - 2, pos_last_circle = pos_center_1 - n;
+    for (unsigned int i = 1; i < n; i++) {
+        mesh.PushTriangle(pos_center_1, i, i - 1);
+        mesh.PushTriangle(pos_center_1 + 1, pos_last_circle + i - 1, pos_last_circle + i);
+    }
+    mesh.PushTriangle(pos_center_1, 0, n - 1);
+    mesh.PushTriangle(pos_center_1 + 1, pos_last_circle, pos_center_1 - 1);
+    return mesh;
+}

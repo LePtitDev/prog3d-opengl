@@ -26,6 +26,8 @@ public:
 
     void Draw();
 
+    Mesh GetMesh(unsigned int, unsigned int) const;
+
 };
 
 #endif //PROG3D_CYLINDER_HPP
