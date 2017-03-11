@@ -497,6 +497,53 @@ void Mesh::DrawNormals() const {
     }
 }
 
+void Mesh::DrawAretes() const {
+    for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
+        Segment(this->P[this->A[i].P1], this->P[this->A[i].P2]).Draw();
+    }
+}
+
+void Mesh::DrawAretesByAngle() const {
+    basic_meshtriangle t1, t2;
+    Vecteur n1, n2;
+    for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
+        if (this->A[i].T1 == 0xffffffff || this->A[i].T2 == 0xffffffff) {
+            uColor::RED.Apply3f();
+        }
+        else {
+            t1 = this->T[this->A[i].T1];
+            t2 = this->T[this->A[i].T2];
+            n1 = Vecteur::VectorByPoints(this->P[t1.A], this->P[t1.B]).GetVectoriel(Vecteur::VectorByPoints(this->P[t1.A], this->P[t1.C]));
+            n2 = Vecteur::VectorByPoints(this->P[t2.A], this->P[t2.B]).GetVectoriel(Vecteur::VectorByPoints(this->P[t2.A], this->P[t2.C]));
+            double angle = n1.GetAngle(n2);
+            if (angle < 0.1) {
+                uColor::GREEN.Apply3f();
+            }
+            else if (angle < M_PI / 2.0) {
+                uColor::ORANGE.Apply3f();
+            }
+            else if (angle < M_PI) {
+                uColor::ROYAL_BLUE.Apply3f();
+                if (angle > M_PI)
+                    std::cout << angle << std::endl;
+            }
+            else {
+                uColor::GREEN.Apply3f();
+
+                /*
+                glColor3f(1, 0, 0);
+                Point segm_p = this->P[this->A[i].P1] + Vecteur::VectorByPoints(this->P[this->A[i].P1], this->P[this->A[i].P2]) * 0.5;
+                Segment(segm_p, segm_p + n1).Draw();
+                Segment(segm_p, segm_p + n2).Draw();
+
+                std::cout << angle << std::endl;
+                */
+            }
+        }
+        Segment(this->P[this->A[i].P1], this->P[this->A[i].P2]).Draw();
+    }
+}
+
 void Mesh::PolygonMode(int m) {
     this->polygon_mode = m;
 }
@@ -515,6 +562,75 @@ Vecteur Mesh::GetNormal(unsigned int i) const {
 
 Triangle Mesh::GetTriangle(unsigned int i) const {
     return Triangle(this->P[this->T[i].A], this->P[this->T[i].B], this->P[this->T[i].C]);
+}
+
+void Mesh::CalculateAretes() {
+    if (this->T.size() == 0) return;
+
+    std::vector<struct _mesh_litesort_GraphElement> graph;
+    basic_mesharete arete;
+    arete.T2 = 0xffffffff;
+
+    // AJOUTER LE PREMIER
+    arete.T1 = 0;
+    if (this->T[0].A < this->T[0].B) {
+        arete.P1 = this->T[0].A;
+        arete.P2 = this->T[0].B;
+    }
+    else {
+        arete.P1 = this->T[0].B;
+        arete.P2 = this->T[0].A;
+    }
+    graph.push_back({arete, 0, 0});
+    if (this->T[0].B < this->T[0].C) {
+        arete.P1 = this->T[0].B;
+        arete.P2 = this->T[0].C;
+    }
+    else {
+        arete.P1 = this->T[0].C;
+        arete.P2 = this->T[0].B;
+    }
+    _mesh_litesort_insert(graph, 0, arete);
+    if (this->T[0].A < this->T[0].C) {
+        arete.P1 = this->T[0].A;
+        arete.P2 = this->T[0].C;
+    }
+    else {
+        arete.P1 = this->T[0].C;
+        arete.P2 = this->T[0].A;
+    }
+    _mesh_litesort_insert(graph, 0, arete);
+    for (unsigned int i = 1, sz = this->T.size(); i < sz; i++) {
+        arete.T1 = i;
+        if (this->T[i].A < this->T[i].B) {
+            arete.P1 = this->T[i].A;
+            arete.P2 = this->T[i].B;
+        }
+        else {
+            arete.P1 = this->T[i].B;
+            arete.P2 = this->T[i].A;
+        }
+        _mesh_litesort_insert(graph, 0, arete);
+        if (this->T[i].B < this->T[i].C) {
+            arete.P1 = this->T[i].B;
+            arete.P2 = this->T[i].C;
+        }
+        else {
+            arete.P1 = this->T[i].C;
+            arete.P2 = this->T[i].B;
+        }
+        _mesh_litesort_insert(graph, 0, arete);
+        if (this->T[i].A < this->T[i].C) {
+            arete.P1 = this->T[i].A;
+            arete.P2 = this->T[i].C;
+        }
+        else {
+            arete.P1 = this->T[i].C;
+            arete.P2 = this->T[i].A;
+        }
+        _mesh_litesort_insert(graph, 0, arete);
+    }
+    _mesh_litesort_paste(graph, 0, this->A);
 }
 
 void Mesh::_draw_() const {
@@ -589,4 +705,62 @@ void Mesh::EnableSmooth() {
 void Mesh::DisableSmooth() {
     Mesh::is_smooth = false;
     glDisable(GL_SMOOTH);
+}
+
+/**
+ * Insère un élément dans le graphe
+ * Paramètres:
+ * - graphe
+ * - position dans le graphe
+ * - élément à insérer
+*/
+void _mesh_litesort_insert(std::vector<struct _mesh_litesort_GraphElement>& Graph, unsigned int GraphPos, basic_mesharete& Elem) {
+    if (Elem.P1 == Graph[GraphPos].elem.P1) {
+        if (Elem.P2 == Graph[GraphPos].elem.P2) {
+            if (Graph[GraphPos].elem.T2 == 0xffffffff)
+                Graph[GraphPos].elem.T2 = Elem.T1;
+            else
+                goto goto_insert_next;
+        }
+        else if (Elem.P2 < Graph[GraphPos].elem.P2) {
+            goto goto_insert_prev;
+        }
+        else {
+            goto goto_insert_next;
+        }
+    }
+    else if (Elem.P1 < Graph[GraphPos].elem.P1) {
+        goto goto_insert_prev;
+    }
+    else {
+        goto goto_insert_next;
+    }
+    return;
+
+goto_insert_prev:
+    if (Graph[GraphPos].prev == 0) {
+        Graph[GraphPos].prev = Graph.size();
+        Graph.push_back({ Elem, 0, 0 });
+    }
+    else {
+        _mesh_litesort_insert(Graph, Graph[GraphPos].prev, Elem);
+    }
+    return;
+
+goto_insert_next:
+    if (Graph[GraphPos].next == 0) {
+        Graph[GraphPos].next = Graph.size();
+        Graph.push_back({ Elem, 0, 0 });
+    }
+    else {
+        _mesh_litesort_insert(Graph, Graph[GraphPos].next, Elem);
+    }
+}
+
+void _mesh_litesort_paste(std::vector<struct _mesh_litesort_GraphElement>& Graph, unsigned int GraphPos, std::vector<basic_mesharete>& Arr) {
+    if (Graph[GraphPos].prev != 0)
+        _mesh_litesort_paste(Graph, Graph[GraphPos].prev, Arr);
+    Arr.push_back(Graph[GraphPos].elem);
+    if (Graph[GraphPos].next != 0)
+        _mesh_litesort_paste(Graph, Graph[GraphPos].next, Arr);
 }

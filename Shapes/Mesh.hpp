@@ -59,6 +59,18 @@ public:
 
 };
 
+//Element d'un graphe
+struct _mesh_litesort_GraphElement {
+    //Valeur
+    basic_mesharete elem;
+    //Position du précédent et suivant
+    unsigned int prev, next;
+};
+
+void _mesh_litesort_insert(std::vector<struct _mesh_litesort_GraphElement>&, unsigned int, basic_mesharete&);
+
+void _mesh_litesort_paste(std::vector<struct _mesh_litesort_GraphElement>&, unsigned int, std::vector<basic_mesharete>&);
+
 class Mesh {
 
     std::vector<Point> P;
@@ -99,6 +111,8 @@ public:
     void DrawFront() const;
     void DrawBack() const;
     void DrawNormals() const;
+    void DrawAretes() const;
+    void DrawAretesByAngle() const;
 
     void PolygonMode(int);
     void ShadeMode(int);
@@ -106,6 +120,8 @@ public:
     Point& operator[](unsigned int);
     Vecteur GetNormal(unsigned int) const;
     Triangle GetTriangle(unsigned int) const;
+
+    void CalculateAretes();
 
 private:
 

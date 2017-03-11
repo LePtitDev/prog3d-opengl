@@ -18,8 +18,10 @@ class TP7Exo1 : public Exercice {
 
     uiLayout layout;
     uiBouton bt_prec, bt_suiv, bt_plus, bt_moins;
+    uiSwitch sw_faces;
 
     int nb_segments, figure;
+    bool faces;
 
 public:
 
@@ -40,6 +42,7 @@ public:
     static void action_bt_suiv(void *);
     static void action_bt_plus(void *);
     static void action_bt_moins(void *);
+    static void action_sw_faces(bool, void *);
 
 };
 

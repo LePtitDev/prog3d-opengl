@@ -1,12 +1,13 @@
 #include "TP7.hpp"
 
 TP7Exo1::TP7Exo1() :
-    camera(Point(0, 0, 50)), lumiere(Point(0, 0, 100)), cylinder(Point(0, 0, 0), Vecteur(0, 15, 0), 10, 1), ball(Point(0, 0, 0), 20, 1, 1), nb_segments(10), figure(0),
+    camera(Point(0, 0, 50)), lumiere(Point(0, 0, 100)), cylinder(Point(0, 0, 0), Vecteur(0, 15, 0), 10, 1), ball(Point(0, 0, 0), 20, 1, 1), nb_segments(10), figure(0), faces(true),
     layout(),
     bt_prec("<", 50, 370, 30, 30, TP7Exo1::action_bt_prec, this),
     bt_suiv(">", 950, 370, 30, 30, TP7Exo1::action_bt_suiv, this),
     bt_plus("+", 550, 50, 30, 30, TP7Exo1::action_bt_plus, this),
-    bt_moins("-", 450, 50, 30, 30, TP7Exo1::action_bt_moins, this)
+    bt_moins("-", 450, 50, 30, 30, TP7Exo1::action_bt_moins, this),
+    sw_faces("Afficher les faces", true, 50, 100, 30, 100, TP7Exo1::action_sw_faces, this)
 {
     Fenetre::Actual().initPerspective();
 
@@ -14,22 +15,31 @@ TP7Exo1::TP7Exo1() :
     layout.AddWidget(bt_suiv);
     layout.AddWidget(bt_plus);
     layout.AddWidget(bt_moins);
+    layout.AddWidget(sw_faces);
 
     this->mesh = cylinder.GetMesh(nb_segments, nb_segments);
     this->mesh.color = MeshColor(MeshColor::BRASS);
     this->mesh.Normalize();
+    this->mesh.CalculateAretes();
 }
 
 void TP7Exo1::OnDraw3D() {
     this->camera.Apply();
     this->lumiere.Apply();
-    
-    this->mesh.Draw();
-    this->mesh.PolygonMode(GL_LINE);
-    this->mesh.color = MeshColor(MeshColor::RUBY);
-    this->mesh.Draw();
-    this->mesh.PolygonMode(GL_FILL);
-    this->mesh.color = MeshColor(MeshColor::BRASS);
+
+    if (faces) {
+        this->mesh.Draw();
+        this->mesh.PolygonMode(GL_LINE);
+        this->mesh.color = MeshColor(MeshColor::RUBY);
+        this->mesh.Draw();
+        this->mesh.PolygonMode(GL_FILL);
+        this->mesh.color = MeshColor(MeshColor::BRASS);
+    }
+    else {
+        Lumiere::DisableLights();
+        this->mesh.DrawAretesByAngle();
+        Lumiere::EnableLights();
+    }
 }
 
 void TP7Exo1::OnDraw2D() {
@@ -69,12 +79,12 @@ void TP7Exo1::action_bt_prec(void * args) {
     TP7Exo1 * exo = (TP7Exo1 *)args;
     if (exo->figure = (exo->figure + 1) % 2) {
         exo->mesh = exo->ball.GetMesh(exo->nb_segments);
-        exo->mesh.Normalize();
     }
     else {
         exo->mesh = exo->cylinder.GetMesh(exo->nb_segments, exo->nb_segments);
-        exo->mesh.Normalize();
     }
+    exo->mesh.Normalize();
+    exo->mesh.CalculateAretes();
 }
 
 void TP7Exo1::action_bt_suiv(void * args) {
@@ -86,12 +96,12 @@ void TP7Exo1::action_bt_plus(void * args) {
     exo->nb_segments++;
     if (exo->figure) {
         exo->mesh = exo->ball.GetMesh(exo->nb_segments);
-        exo->mesh.Normalize();
     }
     else {
         exo->mesh = exo->cylinder.GetMesh(exo->nb_segments, exo->nb_segments);
-        exo->mesh.Normalize();
     }
+    exo->mesh.Normalize();
+    exo->mesh.CalculateAretes();
 }
 
 void TP7Exo1::action_bt_moins(void * args) {
@@ -99,10 +109,15 @@ void TP7Exo1::action_bt_moins(void * args) {
     exo->nb_segments--;
     if (exo->figure) {
         exo->mesh = exo->ball.GetMesh(exo->nb_segments);
-        exo->mesh.Normalize();
     }
     else {
         exo->mesh = exo->cylinder.GetMesh(exo->nb_segments, exo->nb_segments);
-        exo->mesh.Normalize();
     }
+    exo->mesh.Normalize();
+    exo->mesh.CalculateAretes();
+}
+
+void TP7Exo1::action_sw_faces(bool state, void * args) {
+    TP7Exo1 * exo = (TP7Exo1 *)args;
+    exo->faces = state;
 }
