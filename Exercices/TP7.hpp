@@ -16,6 +16,11 @@ class TP7Exo1 : public Exercice {
 
     Mesh mesh;
 
+    uiLayout layout;
+    uiBouton bt_prec, bt_suiv, bt_plus, bt_moins;
+
+    int nb_segments, figure;
+
 public:
 
     TP7Exo1();
@@ -30,6 +35,11 @@ public:
     void OnMotionPressedEvent(int, int);
 
     void OnMotionUnpressedEvent(int, int);
+
+    static void action_bt_prec(void *);
+    static void action_bt_suiv(void *);
+    static void action_bt_plus(void *);
+    static void action_bt_moins(void *);
 
 };
 

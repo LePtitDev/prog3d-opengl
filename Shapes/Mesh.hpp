@@ -104,6 +104,7 @@ public:
     void ShadeMode(int);
 
     Point& operator[](unsigned int);
+    Vecteur GetNormal(unsigned int) const;
     Triangle GetTriangle(unsigned int) const;
 
 private:

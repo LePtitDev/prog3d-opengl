@@ -509,6 +509,10 @@ Point & Mesh::operator[](unsigned int i) {
     return this->P[i];
 }
 
+Vecteur Mesh::GetNormal(unsigned int i) const {
+    return this->N[i];
+}
+
 Triangle Mesh::GetTriangle(unsigned int i) const {
     return Triangle(this->P[this->T[i].A], this->P[this->T[i].B], this->P[this->T[i].C]);
 }

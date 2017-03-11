@@ -69,7 +69,7 @@ Mesh Cylinder::GetMesh(unsigned int nbU, unsigned int nbV) const {
     for (unsigned int j = 0; j < nbV; j++) {
         v = ((double)j / (double)(nbV - 1)) * 2;
         tmp_center = center - this->v * v;
-        for (unsigned int i = 0; i < nbU; i++) {
+        for (unsigned int i = 0; i < nbU - 1; i++) {
             u = ((double)i / (double)(nbU - 1)) * M_PI * 2.0;
             mesh.PushPoint(tmp_center + (v1 * cos(u) + v2 * sin(u)));
         }
@@ -77,25 +77,25 @@ Mesh Cylinder::GetMesh(unsigned int nbU, unsigned int nbV) const {
     mesh.PushPoint(center);
     mesh.PushPoint(center2);
     for (unsigned int j = 1; j < nbV; j++) {
-        for (unsigned int i = 0; i < nbU - 1; i++) {
+        for (unsigned int i = 0; i < nbU - 2; i++) {
             unsigned int vertex[4] = {
-                (j - 1) * nbU + i,
-                (j - 1) * nbU + i + 1,
-                j * nbU + i,
-                j * nbU + i + 1
+                (j - 1) * (nbU - 1) + i,
+                (j - 1) * (nbU - 1) + i + 1,
+                j * (nbU - 1) + i,
+                j * (nbU - 1) + i + 1
             };
             mesh.PushTriangle(vertex[0], vertex[2], vertex[1]);
             mesh.PushTriangle(vertex[1], vertex[2], vertex[3]);
         }
-        mesh.PushTriangle((j - 1) * nbU, (j - 1) * nbU + nbU - 1, (j + 1) * nbU - 1);
-        mesh.PushTriangle((j - 1) * nbU, (j + 1) * nbU - 1, j * nbU);
+        mesh.PushTriangle((j - 1) * (nbU - 1), j * (nbU - 1) - 1, (j + 1) * (nbU - 1) - 1);
+        mesh.PushTriangle((j - 1) * (nbU - 1), (j + 1) * (nbU - 1) - 1, j * (nbU - 1));
     }
-    unsigned int pos_center_1 = mesh.PointNumber() - 2, pos_last_circle = pos_center_1 - nbU;
-    for (unsigned int i = 1; i < nbU; i++) {
+    unsigned int pos_center_1 = mesh.PointNumber() - 2, pos_last_circle = pos_center_1 - nbU + 1;
+    for (unsigned int i = 1; i < nbU - 1; i++) {
         mesh.PushTriangle(pos_center_1, i - 1, i);
         mesh.PushTriangle(pos_center_1 + 1, pos_last_circle + i, pos_last_circle + i - 1);
     }
-    mesh.PushTriangle(pos_center_1, nbU - 1, 0);
+    mesh.PushTriangle(pos_center_1, nbU - 2, 0);
     mesh.PushTriangle(pos_center_1 + 1, pos_last_circle, pos_center_1 - 1);
     return mesh;
 }
