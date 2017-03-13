@@ -364,7 +364,7 @@ void Mesh::PushPoint(const Point& p) {
 
 void Mesh::PushTriangle(unsigned int a, unsigned int b, unsigned int c) {
     basic_meshtriangle t;
-    t.A = a; t.B = b; t.C = c;
+    t.A = a; t.B = b; t.C = c; t.T1 = -1; t.T2 = -1; t.T3 = -1;
     this->T.push_back(t);
     Vecteur normal = Vecteur::VectorByPoints(this->P[a], this->P[b]).GetVectoriel(Vecteur::VectorByPoints(this->P[a], this->P[c]));
     this->N[a] = this->N[a] + normal;
@@ -631,6 +631,119 @@ void Mesh::CalculateAretes() {
         _mesh_litesort_insert(graph, 0, arete);
     }
     _mesh_litesort_paste(graph, 0, this->A);
+
+    for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
+        unsigned int t1 = this->A[i].T1, t2 = this->A[i].T2;
+        if (t2 == 0xffffffff) continue;
+
+        if (this->T[t1].T1 == -1) this->T[t1].T1 = t2;
+        else if (this->T[t1].T2 == -1) this->T[t1].T2 = t2;
+        else this->T[t1].T3 = t2;
+
+        if (this->T[t2].T1 == -1) this->T[t2].T1 = t1;
+        else if (this->T[t2].T2 == -1) this->T[t2].T2 = t1;
+        else this->T[t2].T3 = t1;
+
+        Vecteur n1 = Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].C]));
+        Vecteur n2 = Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].C]));
+        this->A[i].angle = n1.GetAngle(n2);
+        if (this->A[i].angle < 0 || this->A[i].angle > M_PI) this->A[i].angle = 0;
+        this->A[i].angle = M_PI - this->A[i].angle;
+    }
+}
+
+double Mesh::GetAngle(unsigned int t1, unsigned int t2) const {
+    Vecteur n1 = Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].C]));
+    Vecteur n2 = Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].C]));
+    double angle = n1.GetAngle(n2);
+    if (angle < 0 || angle > M_PI) angle = 0;
+    return M_PI - angle;
+}
+
+bool Mesh::IsVoisin(unsigned int t1, unsigned int t2) const {
+    return (this->T[t1].T1 == t2 || this->T[t1].T2 == t2 || this->T[t1].T3 == t2);
+}
+
+bool Mesh::IsInsideList(unsigned int t, std::vector<unsigned int>& v) const {
+    for (unsigned int i = 0, sz = v.size(); i < sz; i++) {
+        if (t == v[i]) return true;
+    }
+    return false;
+}
+
+int Mesh::IndexInsideList(unsigned int t, std::vector<unsigned int>& v) const {
+    for (int i = 0, sz = v.size(); i < sz; i++) {
+        if (t == v[i]) return i;
+    }
+    return -1;
+}
+
+void Mesh::RemoveInsideList(unsigned int t, std::vector<unsigned int>& v) const {
+    for (unsigned int i = 0, sz = v.size(); i < sz; i++) {
+        if (t == v[i]) {
+            v.erase(v.begin() + i);
+            break;
+        }
+    }
+}
+
+void Mesh::AddVoisin(unsigned int t, std::vector<unsigned int>& v_src, std::vector<unsigned int>& v_dest) const {
+    if (this->T[t].T1 != -1 && this->IsInsideList(this->T[t].T1, v_src) && !this->IsInsideList(this->T[t].T1, v_dest)) v_dest.push_back(this->T[t].T1);
+    if (this->T[t].T2 != -1 && this->IsInsideList(this->T[t].T2, v_src) && !this->IsInsideList(this->T[t].T2, v_dest)) v_dest.push_back(this->T[t].T2);
+    if (this->T[t].T3 != -1 && this->IsInsideList(this->T[t].T3, v_src) && !this->IsInsideList(this->T[t].T3, v_dest)) v_dest.push_back(this->T[t].T3);
+}
+
+void Mesh::AddTrianglePoints(unsigned int t, std::vector<unsigned int>& v) const {
+    if (!this->IsInsideList(this->T[t].A, v)) v.push_back(this->T[t].A);
+    if (!this->IsInsideList(this->T[t].B, v)) v.push_back(this->T[t].B);
+    if (!this->IsInsideList(this->T[t].C, v)) v.push_back(this->T[t].C);
+}
+
+std::vector<Mesh> Mesh::Segmenter(double a) const {
+    std::vector<std::vector<unsigned int>> segms;
+    std::vector<unsigned int> unexp, exp;
+    int idx = 0;
+    for (int i = 0, sz = this->T.size(); i < sz; i++) {
+        unexp.push_back(i);
+    }
+    while (unexp.size() > 0) {
+        segms.push_back(std::vector<unsigned int>());
+        segms[idx].push_back(unexp[0]);
+        this->AddVoisin(unexp[0], unexp, exp);
+        unexp.erase(unexp.begin());
+        while (exp.size() > 0) {
+            for (unsigned int i = 0, sz = segms[idx].size(); i < sz; i++) {
+                if (this->GetAngle(exp[0], segms[idx][i]) > a) {
+                    this->AddVoisin(exp[0], unexp, exp);
+                    segms[idx].push_back(exp[0]);
+                    this->RemoveInsideList(exp[0], unexp);
+                    break;
+                }
+            }
+            exp.erase(exp.begin());
+        }
+        //std::cout << ((this->T.size() - unexp.size()) * 100 / this->T.size()) << "%" << std::endl;
+        idx++;
+    }
+
+    std::vector<Mesh> res;
+    Mesh mesh;
+    std::vector<unsigned int> p;
+    for (unsigned int i = 0, sz = segms.size(); i < sz; i++) {
+        mesh = Mesh();
+        for (unsigned int j = 0, sz2 = segms[i].size(); j < sz2; j++) {
+            this->AddTrianglePoints(segms[i][j], p);
+        }
+        for (unsigned int j = 0, sz2 = p.size(); j < sz2; j++) {
+            mesh.PushPoint(this->P[p[j]]);
+        }
+        for (unsigned int j = 0, sz2 = segms[i].size(); j < sz2; j++) {
+            mesh.PushTriangle(this->IndexInsideList(this->T[segms[i][j]].A, p), this->IndexInsideList(this->T[segms[i][j]].B, p), this->IndexInsideList(this->T[segms[i][j]].C, p));
+        }
+        res.push_back(mesh);
+        p.clear();
+    }
+    return res;
 }
 
 void Mesh::_draw_() const {

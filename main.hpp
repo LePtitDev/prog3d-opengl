@@ -84,6 +84,7 @@ class Camera;
 #include "Exercices/TP5.hpp"
 #include "Exercices/TP6.hpp"
 #include "Exercices/TP7.hpp"
+#include "Exercices/TP8.hpp"
 
 //ROOT
 #include "Fenetre.hpp"

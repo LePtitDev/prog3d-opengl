@@ -8,10 +8,12 @@
 
 typedef struct {
     unsigned int A, B, C;
+    int T1, T2, T3;
 } basic_meshtriangle;
 
 typedef struct {
     unsigned int P1, P2, T1, T2;
+    double angle;
 } basic_mesharete;
 
 class MeshColor {
@@ -122,6 +124,16 @@ public:
     Triangle GetTriangle(unsigned int) const;
 
     void CalculateAretes();
+
+    double GetAngle(unsigned int, unsigned int) const;
+    bool IsVoisin(unsigned int, unsigned int) const;
+    bool IsInsideList(unsigned int, std::vector<unsigned int>&) const;
+    int IndexInsideList(unsigned int, std::vector<unsigned int>&) const;
+    void RemoveInsideList(unsigned int, std::vector<unsigned int>&) const;
+    void AddVoisin(unsigned int, std::vector<unsigned int>&, std::vector<unsigned int>&) const;
+    void AddTrianglePoints(unsigned int, std::vector<unsigned int>&) const;
+
+    std::vector<Mesh> Segmenter(double) const;
 
 private:
 

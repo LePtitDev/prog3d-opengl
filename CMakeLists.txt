@@ -76,7 +76,8 @@ set(SOURCE_FILES main.hpp main.cpp
         Exercices/TP4.hpp Exercices/TP4.cpp
         Exercices/TP5.hpp Exercices/TP5.cpp
         Exercices/TP6.hpp Exercices/TP6.cpp
-        Exercices/TP7.hpp Exercices/TP7.cpp)
+        Exercices/TP7.hpp Exercices/TP7.cpp
+        Exercices/TP8.hpp Exercices/TP8.cpp)
 
 add_executable(Prog3D ${SOURCE_FILES})
 

@@ -93,6 +93,9 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     int menu7 = glutCreateMenu(Fenetre::SelectExo);
     glutAddMenuEntry(" Exercice 1 ", 71);
 
+    int menu8 = glutCreateMenu(Fenetre::SelectExo);
+    glutAddMenuEntry(" Exercice 1 ", 81);
+
     this->menu_main = glutCreateMenu(Fenetre::SelectExo);
 
     glutAddMenuEntry(" TP 1 ", 11);
@@ -102,6 +105,7 @@ Fenetre::Fenetre(const char * name, int width, int height, int argc, char * argv
     glutAddSubMenu(" TP 5 ", menu5);
     glutAddSubMenu(" TP 6 ", menu6);
     glutAddSubMenu(" TP 7 ", menu7);
+    glutAddSubMenu(" TP 8 ", menu8);
 
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
@@ -290,6 +294,9 @@ void Fenetre::SelectExo(int index) {
             break;
         case 71:
             Fenetre::actual->exo = new TP7Exo1();
+            break;
+        case 81:
+            Fenetre::actual->exo = new TP8Exo1();
             break;
 
         default:

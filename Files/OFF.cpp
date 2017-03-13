@@ -14,7 +14,7 @@ void FileOFF::Load(const char * fname) {
 
     //On lit l'en-tête "OFF"
     file.getline(buff, 256);
-    if (strcmp(buff, "OFF")) return;
+    if (strncmp(buff, "OFF", 3)) return;
 
     //On lit le nombre de points et triangles
     file.getline(buff, 256);
