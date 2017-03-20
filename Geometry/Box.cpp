@@ -66,3 +66,13 @@ void Box::Draw() const {
     this->P[7].Apply();
     glEnd();
 }
+
+bool Box::Inside(const Point& p) const {
+    Point mid = this->P[0] + this->V[0] * 0.5 + this->V[1] * 0.5 + this->V[2] * 0.5;
+    double length = Segment(this->P[0], this->P[0] + this->V[0] + this->V[1] + this->V[2]).GetLength() / 2;
+    return (
+        Segment(mid, p.GetProjection(Droite(this->P[0], this->V[0]))).GetLength() <= length &&
+        Segment(mid, p.GetProjection(Droite(this->P[0], this->V[1]))).GetLength() <= length &&
+        Segment(mid, p.GetProjection(Droite(this->P[0], this->V[2]))).GetLength() <= length
+    );
+}

@@ -44,6 +44,20 @@ void Point::Apply() const {
     glVertex3f(this->x, this->y, this->z);
 }
 
+bool Point::IsNull() const {
+    return (
+        this->x == NAN ||
+        this->y == NAN ||
+        this->z == NAN
+    );
+}
+
+void Point::Nullify() {
+    this->x = NAN;
+    this->y = NAN;
+    this->z = NAN;
+}
+
 Point Point::operator+(const Vecteur & v) const {
     return Point(this->x + v.x, this->y + v.y, this->z + v.z);
 }

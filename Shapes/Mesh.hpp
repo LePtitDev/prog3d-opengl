@@ -9,6 +9,7 @@
 typedef struct {
     unsigned int A, B, C;
     int T1, T2, T3;
+    int A1, A2, A3;
 } basic_meshtriangle;
 
 typedef struct {
@@ -77,6 +78,7 @@ class Mesh {
 
     std::vector<Point> P;
     std::vector<Vecteur> N;
+    std::vector<int> V_A;
     std::vector<basic_meshtriangle> T;
     std::vector<basic_mesharete> A;
 
@@ -134,6 +136,15 @@ public:
     void AddTrianglePoints(unsigned int, std::vector<unsigned int>&) const;
 
     std::vector<Mesh> Segmenter(double) const;
+
+    bool AreVoisins(unsigned int, unsigned int) const;
+    std::vector<unsigned int> FindPointsVoisins(unsigned int) const;
+    std::vector<unsigned int> FindAretesVoisines(unsigned int) const;
+    std::vector<unsigned int> FindTrianglesVoisins(unsigned int) const;
+
+    void Fusion2Points(unsigned int, unsigned int);
+
+    void Fusion(const Grille3D&);
 
 private:
 

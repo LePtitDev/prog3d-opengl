@@ -360,11 +360,12 @@ unsigned int Mesh::AreteNumber() const {
 void Mesh::PushPoint(const Point& p) {
     this->P.push_back(p);
     this->N.push_back(Vecteur(0, 0, 0));
+    this->V_A.push_back(-1);
 }
 
 void Mesh::PushTriangle(unsigned int a, unsigned int b, unsigned int c) {
     basic_meshtriangle t;
-    t.A = a; t.B = b; t.C = c; t.T1 = -1; t.T2 = -1; t.T3 = -1;
+    t.A = a; t.B = b; t.C = c; t.T1 = -1; t.T2 = -1; t.T3 = -1; t.A1 = -1; t.A2 = -1; t.A3 = -1;
     this->T.push_back(t);
     Vecteur normal = Vecteur::VectorByPoints(this->P[a], this->P[b]).GetVectoriel(Vecteur::VectorByPoints(this->P[a], this->P[c]));
     this->N[a] = this->N[a] + normal;
@@ -529,15 +530,6 @@ void Mesh::DrawAretesByAngle() const {
             }
             else {
                 uColor::GREEN.Apply3f();
-
-                /*
-                glColor3f(1, 0, 0);
-                Point segm_p = this->P[this->A[i].P1] + Vecteur::VectorByPoints(this->P[this->A[i].P1], this->P[this->A[i].P2]) * 0.5;
-                Segment(segm_p, segm_p + n1).Draw();
-                Segment(segm_p, segm_p + n2).Draw();
-
-                std::cout << angle << std::endl;
-                */
             }
         }
         Segment(this->P[this->A[i].P1], this->P[this->A[i].P2]).Draw();
@@ -633,16 +625,19 @@ void Mesh::CalculateAretes() {
     _mesh_litesort_paste(graph, 0, this->A);
 
     for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
+        this->V_A[this->A[i].P1] = i;
+        this->V_A[this->A[i].P2] = i;
+
         unsigned int t1 = this->A[i].T1, t2 = this->A[i].T2;
         if (t2 == 0xffffffff) continue;
 
-        if (this->T[t1].T1 == -1) this->T[t1].T1 = t2;
-        else if (this->T[t1].T2 == -1) this->T[t1].T2 = t2;
-        else this->T[t1].T3 = t2;
+        if (this->T[t1].T1 == -1) { this->T[t1].T1 = t2; this->T[t1].A1 = i; }
+        else if (this->T[t1].T2 == -1) { this->T[t1].T2 = t2; this->T[t1].A2 = i; }
+        else { this->T[t1].T3 = t2; this->T[t1].A3 = i; }
 
-        if (this->T[t2].T1 == -1) this->T[t2].T1 = t1;
-        else if (this->T[t2].T2 == -1) this->T[t2].T2 = t1;
-        else this->T[t2].T3 = t1;
+        if (this->T[t2].T1 == -1) { this->T[t2].T1 = t1; this->T[t2].A1 = i; }
+        else if (this->T[t2].T2 == -1) { this->T[t2].T2 = t1; this->T[t2].A2 = i; }
+        else { this->T[t2].T3 = t1; this->T[t2].A3 = i; }
 
         Vecteur n1 = Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t1].A], this->P[this->T[t1].C]));
         Vecteur n2 = Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].B]).GetVectoriel(Vecteur::VectorByPoints(this->P[this->T[t2].A], this->P[this->T[t2].C]));
@@ -722,7 +717,6 @@ std::vector<Mesh> Mesh::Segmenter(double a) const {
             }
             exp.erase(exp.begin());
         }
-        //std::cout << ((this->T.size() - unexp.size()) * 100 / this->T.size()) << "%" << std::endl;
         idx++;
     }
 
@@ -746,10 +740,175 @@ std::vector<Mesh> Mesh::Segmenter(double a) const {
     return res;
 }
 
+bool Mesh::AreVoisins(unsigned int p1, unsigned int p2) const {
+    std::vector<unsigned int> voisins = this->FindTrianglesVoisins(p1);
+    //std::cout << p1 << " == " << p2 << " ? ";
+    for (unsigned int i = 0, sz = voisins.size(); i < sz; i++) {
+        if (this->T[voisins[i]].A == p2 || this->T[voisins[i]].B == p2 || this->T[voisins[i]].C == p2)
+            return true;
+        //std::cout << voisins[i] << " ";
+    }
+    //std::cout << std::endl;
+    return false;
+}
+
+std::vector<unsigned int> Mesh::FindPointsVoisins(unsigned int p) const {
+    std::vector<unsigned int> aretes = this->FindAretesVoisines(p), res;
+    for (unsigned int i = 0, sz = aretes.size(); i < sz; i++) {
+        if (this->A[i].P1 == p)
+            res.push_back(this->A[i].P2);
+        else if (this->A[i].P2 == p)
+            res.push_back(this->A[i].P1);
+    }
+    return res;
+}
+
+std::vector<unsigned int> Mesh::FindAretesVoisines(unsigned int p) const {
+    std::vector<unsigned int> res, explo;
+    if (this->V_A[p] == -1) return res;
+    explo = this->FindTrianglesVoisins(p);
+    while (explo.size() > 0) {
+        int it = 0, ar[2];
+        if (this->A[this->T[explo[0]].A1].P1 == p || this->A[this->T[explo[0]].A1].P2 == p) ar[it++] = this->T[explo[0]].A1;
+        if (this->A[this->T[explo[0]].A2].P1 == p || this->A[this->T[explo[0]].A2].P2 == p) ar[it++] = this->T[explo[0]].A2;
+        if (this->A[this->T[explo[0]].A3].P1 == p || this->A[this->T[explo[0]].A3].P2 == p) ar[it++] = this->T[explo[0]].A3;
+        bool is_ar1 = false, is_ar2 = false;
+        for (unsigned int i = 0, sz = res.size(); i < sz && (!is_ar1 || !is_ar2); i++) {
+            if (res[i] == ar[0])
+                is_ar1 = true;
+            if (res[i] == ar[1])
+                is_ar2 = true;
+        }
+        if (!is_ar1)
+            res.push_back(ar[0]);
+        if (!is_ar2)
+            res.push_back(ar[1]);
+        explo.erase(explo.begin());
+    }
+    return res;
+}
+
+std::vector<unsigned int> Mesh::FindTrianglesVoisins(unsigned int p) const {
+    std::vector<unsigned int> res, explo;
+    if (this->V_A[p] == -1) return res;
+    explo.push_back(this->V_A[p]);
+    while (explo.size() > 0) {
+        bool is_p1 = false, is_p2 = false;
+        for (unsigned int i = 0, sz = res.size(); i < sz && (!is_p1 || !is_p2); i++) {
+            if (res[i] == this->A[explo[0]].T1)
+                is_p1 = true;
+            if (res[i] == this->A[explo[0]].T2)
+                is_p2 = true;
+        }
+        int tmp_A[3];
+        if (!is_p1 && this->A[explo[0]].T1 != -1) {
+            res.push_back(this->A[explo[0]].T1);
+            tmp_A[0] = this->T[this->A[explo[0]].T1].A1;
+            tmp_A[1] = this->T[this->A[explo[0]].T1].A2;
+            tmp_A[2] = this->T[this->A[explo[0]].T1].A3;
+            for (unsigned int i = 0; i < 3; i++) {
+                if (tmp_A[i] != -1 && tmp_A[i] != explo[0] && (this->A[tmp_A[i]].P1 == p || this->A[tmp_A[i]].P2 == p)) {
+                    explo.push_back(tmp_A[i]);
+                }
+            }
+        }
+        if (!is_p2 && this->A[explo[0]].T2 != -1) {
+            res.push_back(this->A[explo[0]].T2);
+            tmp_A[0] = this->T[this->A[explo[0]].T2].A1;
+            tmp_A[1] = this->T[this->A[explo[0]].T2].A2;
+            tmp_A[2] = this->T[this->A[explo[0]].T2].A3;
+            for (unsigned int i = 0; i < 3; i++) {
+                if (tmp_A[i] != -1 && tmp_A[i] != explo[0] && (this->A[tmp_A[i]].P1 == p || this->A[tmp_A[i]].P2 == p)) {
+                    explo.push_back(tmp_A[i]);
+                }
+            }
+        }
+        explo.erase(explo.begin());
+    }
+    for (int i = res.size() - 1; i >= 0; i--) {
+        if (this->T[res[i]].A == 0 && this->T[res[i]].B == 0 && this->T[res[i]].C == 0)
+            res.erase(res.begin() + i);
+    }
+    return res;
+}
+
+void Mesh::Fusion2Points(unsigned int P1, unsigned int P2) {
+    std::vector<unsigned int> voisins, tmp;
+    voisins = this->FindTrianglesVoisins(P1);
+    tmp = this->FindTrianglesVoisins(P2);
+    for (unsigned int i = 0, sz_i = tmp.size(); i < sz_i; i++) {
+        bool trouve = false;
+        for (unsigned int j = 0, sz_j = voisins.size(); j < sz_j; j++) {
+            if (voisins[j] == tmp[i]) {
+                trouve = true;
+                break;
+            }
+        }
+        if (!trouve)
+            voisins.push_back(tmp[i]);
+    }
+    
+    int it = 0;
+    this->PushPoint(Point((this->P[P1].x + this->P[P2].x) / 2, (this->P[P1].y + this->P[P2].y) / 2, (this->P[P1].z + this->P[P2].z) / 2));
+    unsigned int P3 = this->PointNumber() - 1;
+    for (unsigned int i = 0, sz = voisins.size(); i < sz; i++) {
+        it = 0;
+        if (this->T[voisins[i]].A == P1 || this->T[voisins[i]].B == P1 || this->T[voisins[i]].C == P1) it++;
+        if (this->T[voisins[i]].A == P2 || this->T[voisins[i]].B == P2 || this->T[voisins[i]].C == P2) it++;
+        if (it != 2) {
+            if (this->T[voisins[i]].A == P1 || this->T[voisins[i]].A == P2)
+                this->PushTriangle(P3, this->T[voisins[i]].B, this->T[voisins[i]].C);
+            if (this->T[voisins[i]].B == P1 || this->T[voisins[i]].B == P2)
+                this->PushTriangle(P3, this->T[voisins[i]].A, this->T[voisins[i]].C);
+            if (this->T[voisins[i]].C == P1 || this->T[voisins[i]].C == P2)
+                this->PushTriangle(P3, this->T[voisins[i]].A, this->T[voisins[i]].B);
+        }
+        this->T[voisins[i]].A = 0;
+        this->T[voisins[i]].B = 0;
+        this->T[voisins[i]].C = 0;
+    }
+    this->V_A[P1] = -1;
+    this->V_A[P2] = -1;
+    this->P[P1].Nullify();
+    this->P[P2].Nullify();
+}
+
+void Mesh::Fusion(const Grille3D& g) {
+    for (unsigned int i = 0; i < g.nbX; i++) {
+        for (unsigned int j = 0; j < g.nbY; j++) {
+            for (unsigned int k = 0; k < g.nbZ; k++) {
+                Box box = g.Get(i, j, k);
+                std::vector<unsigned int> points;
+                for (unsigned int p = 0, sz = this->P.size(); p < sz; p++) {
+                    if (!this->P[p].IsNull() && box.Inside(this->P[p]))
+                        points.push_back(p);
+                }
+                while (points.size() > 1) {
+                    bool success = false;
+                    for (unsigned int p = 1, sz = points.size(); p < sz; p++) {
+                        if (this->AreVoisins(points[0], points[p])) {
+                            this->Fusion2Points(points[0], points[p]);
+                            points.erase(points.begin());
+                            points.erase(points.begin());
+                            points.push_back(this->P.size() - 1);
+                            success = true;
+                            //this->CalculateAretes();
+                            break;
+                        }
+                    }
+                    if (!success)
+                        break;
+                }
+            }
+        }
+    }
+}
+
 void Mesh::_draw_() const {
     glBegin(GL_TRIANGLES);
     if (Mesh::is_smooth) {
         for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+            if (this->T[i].A == 0 && this->T[i].B == 0 && this->T[i].C == 0) continue;
             Point p1 = this->P[this->T[i].A];
             Point p2 = this->P[this->T[i].B];
             Point p3 = this->P[this->T[i].C];
@@ -766,6 +925,7 @@ void Mesh::_draw_() const {
     }
     else {
         for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+            if (this->T[i].A == 0 && this->T[i].B == 0 && this->T[i].C == 0) continue;
             Point p1 = this->P[this->T[i].A];
             Point p2 = this->P[this->T[i].B];
             Point p3 = this->P[this->T[i].C];
@@ -781,6 +941,7 @@ void Mesh::_draw_invert_() const {
     glBegin(GL_TRIANGLES);
     if (Mesh::is_smooth) {
         for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+            if (this->T[i].A == 0 && this->T[i].B == 0 && this->T[i].C == 0) continue;
             Point p1 = this->P[this->T[i].A];
             Point p2 = this->P[this->T[i].B];
             Point p3 = this->P[this->T[i].C];
@@ -797,6 +958,7 @@ void Mesh::_draw_invert_() const {
     }
     else {
         for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+            if (this->T[i].A == 0 && this->T[i].B == 0 && this->T[i].C == 0) continue;
             Point p1 = this->P[this->T[i].A];
             Point p2 = this->P[this->T[i].B];
             Point p3 = this->P[this->T[i].C];

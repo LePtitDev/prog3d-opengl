@@ -8,7 +8,6 @@ TP8Exo1::TP8Exo1() :
     this->mesh = FileOFF("Ressources/TP 8/MeshSegmentation.off").GetMesh();
     this->mesh.CalculateAretes();
     this->segms = this->mesh.Segmenter(M_PI - M_PI / 6);
-    std::cout << this->segms.size() << std::endl;
 }
 
 void TP8Exo1::OnDraw3D() {

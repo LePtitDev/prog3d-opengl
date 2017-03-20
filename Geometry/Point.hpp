@@ -23,6 +23,9 @@ public:
 
     void Apply() const;
 
+    bool IsNull() const;
+    void Nullify();
+
     Point operator+(const Vecteur&) const;
     Point operator-(const Vecteur&) const;
 

@@ -22,6 +22,8 @@ public:
 
     void Draw() const;
 
+    bool Inside(const Point&) const;
+
 };
 
 #endif //PROG3D_BOX_HPP

@@ -51,6 +51,7 @@ class Camera;
 #include "Shapes/Ball.hpp"
 #include "Shapes/Voxel.hpp"
 #include "Shapes/Volume.hpp"
+#include "Shapes/Grille.hpp"
 #include "Shapes/Mesh.hpp"
 
 //FILES
@@ -85,6 +86,7 @@ class Camera;
 #include "Exercices/TP6.hpp"
 #include "Exercices/TP7.hpp"
 #include "Exercices/TP8.hpp"
+#include "Exercices/TP9.hpp"
 
 //ROOT
 #include "Fenetre.hpp"
