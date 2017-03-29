@@ -373,6 +373,14 @@ void Mesh::PushTriangle(unsigned int a, unsigned int b, unsigned int c) {
     this->N[c] = this->N[c] + normal;
 }
 
+std::array<unsigned int, 3> Mesh::GetTriangle3(unsigned int i) const {
+    std::array<unsigned int, 3> tr;
+    tr[0] = this->T[i].A;
+    tr[1] = this->T[i].B;
+    tr[2] = this->T[i].C;
+    return tr;
+}
+
 void Mesh::Normalize() {
     for (unsigned int i = 0, sz = this->N.size(); i < sz; i++) {
         this->N[i].Normalize();
@@ -902,6 +910,17 @@ void Mesh::Fusion(const Grille3D& g) {
             }
         }
     }
+}
+
+DynamicMesh Mesh::ToDynamicMesh() const {
+    DynamicMesh mesh;
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        mesh.AddPoint(this->P[i]);
+    }
+    for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+        mesh.AddTriangle(this->T[i].A, this->T[i].B, this->T[i].C);
+    }
+    return mesh;
 }
 
 void Mesh::_draw_() const {

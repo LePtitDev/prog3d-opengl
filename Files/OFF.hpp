@@ -12,9 +12,12 @@ class FileOFF {
 
 public:
 
+    FileOFF();
+    FileOFF(DynamicMesh&);
     FileOFF(const char *);
 
     void Load(const char *);
+    void Save(const char *);
 
     const Mesh& GetMesh() const;
 

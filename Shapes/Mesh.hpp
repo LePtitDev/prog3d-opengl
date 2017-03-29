@@ -124,6 +124,7 @@ public:
     Point& operator[](unsigned int);
     Vecteur GetNormal(unsigned int) const;
     Triangle GetTriangle(unsigned int) const;
+    std::array<unsigned int, 3> GetTriangle3(unsigned int) const;
 
     void CalculateAretes();
 
@@ -145,6 +146,8 @@ public:
     void Fusion2Points(unsigned int, unsigned int);
 
     void Fusion(const Grille3D&);
+
+    DynamicMesh ToDynamicMesh() const;
 
 private:
 

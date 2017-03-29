@@ -12,7 +12,7 @@ class TP9Exo1 : public Exercice {
 
     Camera camera;
     
-    Mesh mesh;
+    DynamicMesh mesh;
 
 public:
 
@@ -37,7 +37,7 @@ class TP9Exo2 : public Exercice {
 
     Camera camera;
     
-    Mesh mesh;
+    DynamicMesh mesh;
     Grille3D grille;
 
 public:

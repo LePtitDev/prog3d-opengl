@@ -52,6 +52,7 @@ set(SOURCE_FILES main.hpp main.cpp
         Shapes/Volume.hpp Shapes/Volume.cpp
         Shapes/Grille.hpp Shapes/Grille.cpp
         Shapes/Mesh.hpp Shapes/Mesh.cpp
+        Shapes/DynamicMesh.hpp Shapes/DynamicMesh.cpp
 
         Files/OFF.hpp Files/OFF.cpp
 

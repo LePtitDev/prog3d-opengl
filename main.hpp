@@ -28,6 +28,7 @@ class Curve;
 class Surface;
 
 class Mesh;
+class DynamicMesh;
 
 class Camera;
 
@@ -53,6 +54,7 @@ class Camera;
 #include "Shapes/Volume.hpp"
 #include "Shapes/Grille.hpp"
 #include "Shapes/Mesh.hpp"
+#include "Shapes/DynamicMesh.hpp"
 
 //FILES
 #include "Files/OFF.hpp"
