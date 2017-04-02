@@ -19,6 +19,8 @@ public:
     Point GetProjection(const Droite&) const;
     Point GetProjection(const Plan&) const;
 
+    Point GetMiddle(const Point&) const;
+
     void Draw() const;
 
     void Apply() const;
@@ -28,6 +30,10 @@ public:
 
     Point operator+(const Vecteur&) const;
     Point operator-(const Vecteur&) const;
+    Point operator+(const Point&) const;
+    Point operator-(const Point&) const;
+    Point operator*(double) const;
+    Point operator/(double) const;
 
 };
 

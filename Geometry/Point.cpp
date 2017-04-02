@@ -34,6 +34,10 @@ Point Point::GetProjection(const Plan & P) const {
     return Point(this->x - vp2.x * norm, this->y - vp2.y * norm, this->z - vp2.z * norm);
 }
 
+Point Point::GetMiddle(const Point & p) const {
+    return Point((this->x + p.x) / 2, (this->y + p.y) / 2, (this->z + p.z) / 2);
+}
+
 void Point::Draw() const {
     glBegin(GL_POINTS);
     glVertex3f(this->x, this->y, this->z);
@@ -64,4 +68,20 @@ Point Point::operator+(const Vecteur & v) const {
 
 Point Point::operator-(const Vecteur & v) const {
     return Point(this->x - v.x, this->y - v.y, this->z - v.z);
+}
+
+Point Point::operator+(const Point & p) const {
+    return Point(this->x + p.x, this->y + p.y, this->z + p.z);
+}
+
+Point Point::operator-(const Point & p) const {
+    return Point(this->x - p.x, this->y - p.y, this->z - p.z);
+}
+
+Point Point::operator*(double k) const {
+    return Point(this->x * k, this->y * k, this->z * k);
+}
+
+Point Point::operator/(double k) const {
+    return Point(this->x / k, this->y / k, this->z / k);
 }

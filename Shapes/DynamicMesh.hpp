@@ -57,6 +57,9 @@ public:
     void Merge(const Box&);
     void Merge(const Grille3D&);
 
+    void Subdivide();
+    void SubdivideByButterfly();
+
     bool Correct() const;
     bool Closed() const;
     bool FreePoint() const;

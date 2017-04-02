@@ -361,6 +361,75 @@ void DynamicMesh::Merge(const Grille3D & grille) {
     }
 }
 
+void DynamicMesh::Subdivide() {
+    unsigned int first_new = this->P.size();
+    std::vector<triangle_type> t_cpy = this->T;
+    this->T.clear();
+
+    // On nettoie les points
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++)
+        this->P[i] = { this->P[i].P, Vecteur(), std::vector<unsigned int>() };
+    // On ajoute les points centraux pour chaque arète
+    for (unsigned int i = 0, sz = this->A.size(); i < sz; i++)
+        this->AddPoint(this->P[this->A[i].P[0]].P.GetMiddle(this->P[this->A[i].P[1]].P));
+    this->A.clear();
+    // On ajoute les triangles
+    unsigned int tmp[3];
+    for (unsigned int i = 0, sz = t_cpy.size(); i < sz; i++) {
+        for (unsigned int j = 0; j < 3; j++)
+            tmp[j] = first_new + t_cpy[i].A[j];
+        this->AddTriangle(t_cpy[i].P[0], tmp[0], tmp[2]);
+        this->AddTriangle(t_cpy[i].P[1], tmp[1], tmp[0]);
+        this->AddTriangle(t_cpy[i].P[2], tmp[2], tmp[1]);
+        this->AddTriangle(tmp[0], tmp[1], tmp[2]);
+    }
+}
+
+void DynamicMesh::SubdivideByButterfly() {
+    unsigned int first_new = this->P.size();
+    std::vector<triangle_type> t_cpy = this->T;
+    this->T.clear();
+
+    // On ajoute les points centraux pour chaque arète
+    Point nv_p;
+    unsigned int neigh;
+    std::vector<unsigned int> neighbors;
+    for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
+        //Points de l'arète
+        nv_p = this->P[this->A[i].P[0]].P / 2 + this->P[this->A[i].P[1]].P / 2;
+        //Points communs
+        for (unsigned int j = 0, sz_j = this->A[i].T.size(); j < sz_j; j++) {
+            neigh = (t_cpy[this->A[i].T[j]].P[0] == this->A[i].P[0] || t_cpy[this->A[i].T[j]].P[0] == this->A[i].P[1]) ?
+                    (t_cpy[this->A[i].T[j]].P[1] == this->A[i].P[0] || t_cpy[this->A[i].T[j]].P[1] == this->A[i].P[1]) ?
+                    t_cpy[this->A[i].T[j]].P[2] : t_cpy[this->A[i].T[j]].P[1] : t_cpy[this->A[i].T[j]].P[0];
+            neighbors = this->FindPointsNeighbors(neigh);
+            for (int k = neighbors.size() - 1; k >= 0; k--) {
+                if (neighbors[k] == this->A[i].P[0] || neighbors[k] == this->A[i].P[1] || (!this->AreNeighbors(neighbors[k], this->A[i].P[0]) && !this->AreNeighbors(neighbors[k], this->A[i].P[1])))
+                    neighbors.erase(neighbors.begin() + k);
+            }
+
+            if (neighbors.size() >= 2)
+                nv_p = nv_p + this->P[neigh].P / 8 - this->P[neighbors[0]].P / 16 - this->P[neighbors[1]].P / 16;
+        }
+        this->AddPoint(nv_p);
+    }
+
+    // On nettoie les points
+    for (unsigned int i = 0, sz = first_new; i < sz; i++)
+        this->P[i] = { this->P[i].P, Vecteur(), std::vector<unsigned int>() };
+    this->A.clear();
+    // On ajoute les triangles
+    unsigned int tmp[3];
+    for (unsigned int i = 0, sz = t_cpy.size(); i < sz; i++) {
+        for (unsigned int j = 0; j < 3; j++)
+            tmp[j] = first_new + t_cpy[i].A[j];
+        this->AddTriangle(t_cpy[i].P[0], tmp[0], tmp[2]);
+        this->AddTriangle(t_cpy[i].P[1], tmp[1], tmp[0]);
+        this->AddTriangle(t_cpy[i].P[2], tmp[2], tmp[1]);
+        this->AddTriangle(tmp[0], tmp[1], tmp[2]);
+    }
+}
+
 bool DynamicMesh::Correct() const {
     for (unsigned int i = 0, sz = this->A.size(); i < sz; i++) {
         if (this->A[i].T.size() > 2)

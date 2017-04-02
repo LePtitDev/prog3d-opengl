@@ -1,7 +1,7 @@
 #include "TP7.hpp"
 
 TP7Exo1::TP7Exo1() :
-    camera(Point(0, 0, 50)), lumiere(Point(0, 0, 100)), cylinder(Point(0, 0, 0), Vecteur(0, 15, 0), 10, 1), ball(Point(0, 0, 0), 20, 1, 1), nb_segments(10), figure(0), faces(true),
+    camera(Point(0, 0, 50)), lumiere(Point(0, 0, 50)), cylinder(Point(0, 0, 0), Vecteur(0, 15, 0), 10, 1), ball(Point(0, 0, 0), 20, 1, 1), nb_segments(10), figure(0), faces(true),
     layout(),
     bt_prec("<", 50, 370, 30, 30, TP7Exo1::action_bt_prec, this),
     bt_suiv(">", 950, 370, 30, 30, TP7Exo1::action_bt_suiv, this),
