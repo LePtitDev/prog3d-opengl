@@ -1,7 +1,7 @@
 #include "OctreePoint.hpp"
 
 OctreePoint::OctreePoint(const Voxel& voxel, DynamicMesh& mesh, const std::vector<unsigned int>& pl) :
-    vox(vox), node(false), mesh(mesh)
+    vox(voxel), node(false), mesh(mesh)
 {
     for (unsigned int i = 0, sz = pl.size(); i < sz; i++) {
         if (this->vox.Inside(mesh.GetPoint(pl[i])))
@@ -59,8 +59,8 @@ std::vector<unsigned int> OctreePoint::GetPointsInside(const Point& center, doub
 
 double OctreePoint::GetDistance(const Point& p, bool first, unsigned int * idx) const {
     double res = NAN, tmp_d;
-    unsigned int index;
-    if (this->P.size() == 0) return res;
+    unsigned int index = -1;
+    if (this->P.size() == 0 && !this->node) return res;
     if (this->node) {
         std::vector<unsigned int> sorted, unsorted;
         for (unsigned int i = 0; i < 8; i++) unsorted.push_back(i);
@@ -73,11 +73,12 @@ double OctreePoint::GetDistance(const Point& p, bool first, unsigned int * idx) 
                     min_d = tmp_d;
                 }
             }
-            sorted.push_back(min_i);
+            sorted.push_back(unsorted[min_i]);
             unsorted.erase(unsorted.begin() + min_i);
         }
-        for (unsigned int i = 0; i < 8 && res == NAN; i++)
+        for (unsigned int i = 0; i < 8 && __isnan(res); i++) {
             res = this->child[sorted[i]]->GetDistance(p, false, &index);
+        }
     }
     else {
         res = this->mesh.GetPoint(this->P[0]).GetDistance(p);
@@ -97,11 +98,11 @@ double OctreePoint::GetDistance(const Point& p, bool first, unsigned int * idx) 
                 res = tmp_d;
             }
         }
-        res = this->mesh.GetDistance(p, index);
+        if (index != -1)
+            res = this->mesh.GetDistance(p, index);
     }
-    else {
+    else
         *idx = index;
-    }
     return res;
 }
 

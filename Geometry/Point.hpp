@@ -39,6 +39,8 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream&, const Point&);
+
 #endif //PROG3D_POINT_HPP
 
 #endif

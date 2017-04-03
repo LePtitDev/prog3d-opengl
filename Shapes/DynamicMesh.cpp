@@ -620,11 +620,15 @@ void DynamicMesh::CalculateDistanceByOctree(DynamicMesh& mesh) {
     this->D.clear();
     Box box = mesh.GetBox();
     double length = std::max(box.GetVector(0).GetNorm(), std::max(box.GetVector(1).GetNorm(), box.GetVector(2).GetNorm()));
-    Voxel voxel(box.GetPoint(0) + Vecteur::VectorByPoints(box.GetPoint(0), box.GetPoint(7)) * (1 / 2), length / 2);
+    Voxel voxel(box.GetPoint(0) + Vecteur::VectorByPoints(box.GetPoint(0), box.GetPoint(7)) * ((double)1 / (double)2), length / 2);
     std::vector<unsigned int> tmp_v;
     for (unsigned int i = 0, sz = mesh.P.size(); i < sz; i++) tmp_v.push_back(i);
     OctreePoint tree(voxel, mesh, tmp_v);
+    uTimer timer;
+    timer.Start();
     for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
         this->D.push_back(tree.GetDistance(this->P[i].P));
     }
+    timer.Stop();
+    std::cout << "Temps de calcul du second : " << timer.GetTime() << std::endl;
 }

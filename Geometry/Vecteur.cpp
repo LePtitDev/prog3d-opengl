@@ -67,3 +67,7 @@ Vecteur Vecteur::operator-(const Vecteur & v) const {
 Vecteur Vecteur::operator*(double r) const {
     return Vecteur(this->x * r, this->y * r, this->z * r);
 }
+
+std::ostream& operator<<(std::ostream& s, const Vecteur& v) {
+    s << "Vecteur(" << v.x << ", " << v.y << ", " << v.z << ")";
+}

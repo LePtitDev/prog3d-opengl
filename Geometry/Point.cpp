@@ -90,3 +90,7 @@ Point Point::operator*(double k) const {
 Point Point::operator/(double k) const {
     return Point(this->x / k, this->y / k, this->z / k);
 }
+
+std::ostream& operator<<(std::ostream& s, const Point& p) {
+    s << "Point(" << p.x << ", " << p.y << ", " << p.z << ")";
+}

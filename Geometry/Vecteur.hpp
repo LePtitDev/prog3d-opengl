@@ -33,6 +33,8 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream&, const Vecteur&);
+
 #endif //PROG3D_VECTEUR_HPP
 
 #endif

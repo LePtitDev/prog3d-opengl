@@ -81,11 +81,11 @@ TP10Exo2::TP10Exo2() :
     timer.Start();
     this->mesh2.CalculateDistance(this->mesh1);
     std::cout << "Temps de calcul du premier : " << timer.GetTime() << std::endl;
-    timer.Stop();
-    timer.Start();
+    //timer.Stop();
+    //timer.Start();
     this->mesh2.CalculateDistanceByOctree(this->mesh1);
-    std::cout << "Temps de calcul du second : " << timer.GetTime() << std::endl;
-    timer.Stop();
+    //std::cout << "Temps de calcul du second : " << timer.GetTime() << std::endl;
+    //timer.Stop();
 }
 
 void TP10Exo2::OnDraw3D() {
@@ -93,7 +93,7 @@ void TP10Exo2::OnDraw3D() {
 
     if (this->disp == 0) {
         glColor3f(0.5, 0.3, 0.8);
-        this->mesh1.DrawDistances();
+        this->mesh1.Draw();
         glColor3f(1, 1, 1);
         this->mesh1.DrawLines();
         //glColor3f(1, 0, 0);
