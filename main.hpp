@@ -7,6 +7,7 @@
 #include <vector>
 #include <array>
 #include <chrono>
+#include <algorithm>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,6 +53,7 @@ class Camera;
 #include "Shapes/Ball.hpp"
 #include "Shapes/Voxel.hpp"
 #include "Shapes/Volume.hpp"
+#include "Shapes/OctreePoint.hpp"
 #include "Shapes/Grille.hpp"
 #include "Shapes/Mesh.hpp"
 #include "Shapes/DynamicMesh.hpp"
@@ -89,6 +91,7 @@ class Camera;
 #include "Exercices/TP7.hpp"
 #include "Exercices/TP8.hpp"
 #include "Exercices/TP9.hpp"
+#include "Exercices/TP10.hpp"
 
 //ROOT
 #include "Fenetre.hpp"

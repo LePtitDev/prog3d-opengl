@@ -14,6 +14,9 @@ unsigned int DynamicMesh::Triangles() const { return this->T.size(); }
 Point DynamicMesh::GetPoint(unsigned int i) const {
     return this->P[i].P;
 }
+Vecteur DynamicMesh::GetNormal(unsigned int i) const {
+    return this->P[i].N;
+}
 std::array<unsigned int, 2> DynamicMesh::GetArete(unsigned int i) const {
     std::array<unsigned int, 2> res;
     res[0] = this->A[i].P[0];
@@ -63,8 +66,137 @@ void DynamicMesh::DrawLines() const {
     glEnd();
 }
 
+void DynamicMesh::DrawNormals() const {
+    glBegin(GL_LINES);
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        this->P[i].P.Apply();
+        (this->P[i].P + this->P[i].N).Apply();
+    }
+    glEnd();
+}
+
+void DynamicMesh::DrawDistances() const {
+    if (this->D.size() != this->P.size()) return;
+    double max = this->D[0];
+    for (unsigned int i = 1, sz = this->D.size(); i < sz; i++) {
+        if (max < this->D[i])
+            max = this->D[i];
+    }
+
+    glBegin(GL_TRIANGLES);
+    for (unsigned int i = 0, sz = this->T.size(); i < sz; i++) {
+        Point p1 = this->P[this->T[i].P[0]].P;
+        Point p2 = this->P[this->T[i].P[1]].P;
+        Point p3 = this->P[this->T[i].P[2]].P;
+        Vecteur n1 = this->P[this->T[i].P[0]].N;
+        Vecteur n2 = this->P[this->T[i].P[1]].N;
+        Vecteur n3 = this->P[this->T[i].P[2]].N;
+        glColor3f(this->D[this->T[i].P[0]] / max, 1 - (this->D[this->T[i].P[0]] / max), 0.8);
+        glNormal3f(n1.x, n1.y, n1.z);
+        glVertex3f(p1.x, p1.y, p1.z);
+        glColor3f(this->D[this->T[i].P[1]] / max, 1 - (this->D[this->T[i].P[1]] / max), 0.8);
+        glNormal3f(n2.x, n2.y, n2.z);
+        glVertex3f(p2.x, p2.y, p2.z);
+        glColor3f(this->D[this->T[i].P[2]] / max, 1 - (this->D[this->T[i].P[2]] / max), 0.8);
+        glNormal3f(n3.x, n3.y, n3.z);
+        glVertex3f(p3.x, p3.y, p3.z);
+    }
+    glEnd();
+}
+
+void DynamicMesh::Normalize() {
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++)
+        this->P[i].N.Normalize();
+}
+
+void DynamicMesh::Translate(double x, double y, double z) {
+    Vecteur t(x, y, z);
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        this->P[i].P = this->P[i].P + t;
+    }
+}
+
+void DynamicMesh::RotateX(double a) {
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        Point pnorm = this->P[i].P + this->P[i].N;
+        double y = this->P[i].P.y, z = this->P[i].P.z;
+        this->P[i].P.y = y * cos(a) - z * sin(a);
+        this->P[i].P.z = y * sin(a) + z * cos(a);
+        y = pnorm.y; z = pnorm.z;
+        pnorm.y = y * cos(a) - z * sin(a);
+        pnorm.z = y * sin(a) + z * cos(a);
+        this->P[i].N = Vecteur::VectorByPoints(this->P[i].P, pnorm);
+    }
+}
+
+void DynamicMesh::RotateY(double a) {
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        Point pnorm = this->P[i].P + this->P[i].N;
+        double x = this->P[i].P.x, z = this->P[i].P.z;
+        this->P[i].P.x = x * cos(a) + z * sin(a);
+        this->P[i].P.z = -x * sin(a) + z * cos(a);
+        x = pnorm.x; z = pnorm.z;
+        pnorm.x = x * cos(a) + z * sin(a);
+        pnorm.z = -x * sin(a) + z * cos(a);
+        this->P[i].N = Vecteur::VectorByPoints(this->P[i].P, pnorm);
+    }
+}
+
+void DynamicMesh::RotateZ(double a) {
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        Point pnorm = this->P[i].P + this->P[i].N;
+        double x = this->P[i].P.x, y = this->P[i].P.y;
+        this->P[i].P.x = x * cos(a) - y * sin(a);
+        this->P[i].P.y = x * sin(a) + y * cos(a);
+        x = pnorm.x; y = pnorm.y;
+        pnorm.x = x * cos(a) - y * sin(a);
+        pnorm.y = x * sin(a) + y * cos(a);
+        this->P[i].N = Vecteur::VectorByPoints(this->P[i].P, pnorm);
+    }
+}
+
+void DynamicMesh::Scale(double x, double y, double z) {
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        this->P[i].P.x *= x;
+        this->P[i].P.y *= y;
+        this->P[i].P.z *= z;
+    }
+}
+
+Box DynamicMesh::GetBox() const {
+    double x_min = this->P[0].P.x, x_max = this->P[0].P.x, y_min = this->P[0].P.y, y_max = this->P[0].P.y, z_min = this->P[0].P.z, z_max = this->P[0].P.z;
+    for (unsigned int i = 1, sz = this->P.size(); i < sz; i++) {
+        if (this->P[i].P.x < x_min) x_min = this->P[i].P.x;
+        if (this->P[i].P.x > x_max) x_max = this->P[i].P.x;
+        if (this->P[i].P.y < y_min) y_min = this->P[i].P.y;
+        if (this->P[i].P.y > y_max) y_max = this->P[i].P.y;
+        if (this->P[i].P.z < z_min) z_min = this->P[i].P.z;
+        if (this->P[i].P.z > z_max) z_max = this->P[i].P.z;
+    }
+    Point point(x_min, y_min, z_min);
+    return Box(point, Vecteur(x_max - x_min, 0, 0), Vecteur(0, y_max - y_min, 0), Vecteur(0, 0, z_max - z_min));
+}
+
+void DynamicMesh::Reposition(const Box& b) {
+    Box actual = this->GetBox();
+    double dx = b.GetVector(0).x / actual.GetVector(0).x;
+    double dy = b.GetVector(1).y / actual.GetVector(1).y;
+    double dz = b.GetVector(2).z / actual.GetVector(2).z;
+    double min_value = (dx < dy) ? dx : dy; min_value = (min_value < dz) ? min_value : dz;
+    this->Scale(min_value, min_value, min_value);
+    actual = this->GetBox();
+    dx = b.GetPoint(0).x - actual.GetPoint(0).x;
+    dy = b.GetPoint(0).y - actual.GetPoint(0).y;
+    dz = b.GetPoint(0).z - actual.GetPoint(0).z;
+    double diff_x = b.GetVector(0).x - actual.GetVector(0).x;
+    double diff_y = b.GetVector(1).y - actual.GetVector(1).y;
+    double diff_z = b.GetVector(2).z - actual.GetVector(2).z;
+    this->Translate(dx + diff_x / 2, dy + diff_y / 2, dz + diff_z / 2);
+    actual = this->GetBox();
+}
+
 unsigned int DynamicMesh::AddPoint(const Point & p) {
-    this->P.push_back({ p, Vecteur(), std::vector<unsigned int>() });
+    this->P.push_back({ p, Vecteur(0, 0, 0), std::vector<unsigned int>() });
     return this->P.size() - 1;
 }
 void DynamicMesh::RemovePoint(unsigned int p) {
@@ -172,9 +304,10 @@ void DynamicMesh::RemoveArete(unsigned int a) {
     }
     this->A.pop_back();
 }
-unsigned int DynamicMesh::AddTriangle(unsigned int p1, unsigned int p2, unsigned int p3) {
-    if (p1 > p2) return this->AddTriangle(p2, p1, p3);
-    else if (p2 > p3) return this->AddTriangle(p1, p3, p2);
+unsigned int DynamicMesh::AddTriangle(unsigned int p1, unsigned int p2, unsigned int p3, bool calculate_normal) {
+    unsigned int res;
+    if (p1 > p2) res = this->AddTriangle(p2, p1, p3, false);
+    else if (p2 > p3) res = this->AddTriangle(p1, p3, p2, false);
     else {
         unsigned int index = this->T.size();
         this->T.push_back({
@@ -185,14 +318,17 @@ unsigned int DynamicMesh::AddTriangle(unsigned int p1, unsigned int p2, unsigned
                                           this->AddAreteSafe(p1, p3)
                                   }
                           });
-        Vecteur normal = Vecteur::VectorByPoints(this->P[p1].P, this->P[p2].P).GetVectoriel(Vecteur::VectorByPoints(this->P[p1].P, this->P[p3].P));
         for (int i = 0; i < 3; i++)
             this->A[this->T[index].A[i]].T.push_back(index);
+        res = index;
+    }
+    if (calculate_normal) {
+        Vecteur normal = Vecteur::VectorByPoints(this->P[p1].P, this->P[p2].P).GetVectoriel(Vecteur::VectorByPoints(this->P[p1].P, this->P[p3].P));
         this->P[p1].N = this->P[p1].N + normal;
         this->P[p2].N = this->P[p2].N + normal;
         this->P[p3].N = this->P[p3].N + normal;
-        return index;
     }
+    return res;
 }
 unsigned int DynamicMesh::AddTriangleSafe(unsigned int p1, unsigned int p2, unsigned int p3) {
     if (p1 > p2) return this->AddTriangleSafe(p2, p1, p3);
@@ -452,4 +588,43 @@ bool DynamicMesh::FreePoint() const {
             return true;
     }
     return false;
+}
+
+double DynamicMesh::GetDistance(const Point& p) const {
+    unsigned int nearest_point = 0;
+    double nearest_dist = this->P[0].P.GetDistance(p), tmp_d;
+    for (unsigned int i = 1, sz = this->P.size(); i < sz; i++) {
+        if (nearest_dist > (tmp_d = this->P[i].P.GetDistance(p))) {
+            nearest_point = i;
+            nearest_dist = tmp_d;
+        }
+    }
+
+    Point proj = p.GetProjection(Droite(this->P[nearest_point].P, this->P[nearest_point].N));
+    return this->P[nearest_point].P.GetDistance(proj);
+}
+
+double DynamicMesh::GetDistance(const Point& p, unsigned int i) const {
+    Point proj = p.GetProjection(Droite(this->P[i].P, this->P[i].N));
+    return this->P[i].P.GetDistance(proj);
+}
+
+void DynamicMesh::CalculateDistance(const DynamicMesh& mesh) {
+    this->D.clear();
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        this->D.push_back(mesh.GetDistance(this->P[i].P));
+    }
+}
+
+void DynamicMesh::CalculateDistanceByOctree(DynamicMesh& mesh) {
+    this->D.clear();
+    Box box = mesh.GetBox();
+    double length = std::max(box.GetVector(0).GetNorm(), std::max(box.GetVector(1).GetNorm(), box.GetVector(2).GetNorm()));
+    Voxel voxel(box.GetPoint(0) + Vecteur::VectorByPoints(box.GetPoint(0), box.GetPoint(7)) * (1 / 2), length / 2);
+    std::vector<unsigned int> tmp_v;
+    for (unsigned int i = 0, sz = mesh.P.size(); i < sz; i++) tmp_v.push_back(i);
+    OctreePoint tree(voxel, mesh, tmp_v);
+    for (unsigned int i = 0, sz = this->P.size(); i < sz; i++) {
+        this->D.push_back(tree.GetDistance(this->P[i].P));
+    }
 }

@@ -174,7 +174,7 @@ TP9Exo4::TP9Exo4() :
 {
     Fenetre::Actual().initPerspective();
 
-    Mesh m = FileOFF("Ressources/TP 6/max.off").GetMesh();
+    Mesh m = FileOFF("Ressources/TP 6/triceratops.off").GetMesh();
     m.Reposition(Box(Point(-3, -3, -3), Vecteur(6, 6, 6), Vecteur(6, 6, 6), Vecteur(6, 6, 6)));
 
     this->mesh = m.ToDynamicMesh();
@@ -186,6 +186,8 @@ void TP9Exo4::OnDraw3D() {
     if (!this->reduced && this->figure != 0) {
         this->timer.Start();
         this->mesh_ssub.Subdivide();
+        this->mesh.SubdivideByButterfly();
+        this->mesh.SubdivideByButterfly();
         this->mesh.SubdivideByButterfly();
         this->timer.Stop();
         this->reduced = true;

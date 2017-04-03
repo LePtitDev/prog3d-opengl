@@ -155,6 +155,10 @@ bool Voxel::Inside(double x, double y, double z) const {
             (p.z - h <= z) && (z <= p.z + h));
 }
 
+bool Voxel::Inside(const Point& p) const {
+    return this->Inside(p.x, p.y, p.z);
+}
+
 void Voxel::operator=(const Voxel & v) {
     p = v.p;
     l = v.l;

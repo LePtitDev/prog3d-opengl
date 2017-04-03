@@ -20,6 +20,7 @@ public:
     void Draw() const;
     void DrawLines() const;
 
+    bool Inside(const Point&) const;
     bool Inside(double, double, double) const;
 
     void operator=(const Voxel&);

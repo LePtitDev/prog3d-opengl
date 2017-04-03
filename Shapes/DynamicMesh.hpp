@@ -16,6 +16,8 @@ class DynamicMesh {
     std::vector<arete_type> A;
     std::vector<triangle_type> T;
 
+    std::vector<double> D;
+
 public:
 
     DynamicMesh();
@@ -26,12 +28,26 @@ public:
     unsigned int Triangles() const;
 
     Point GetPoint(unsigned int) const;
+    Vecteur GetNormal(unsigned int) const;
     std::array<unsigned int, 2> GetArete(unsigned int) const;
     std::array<unsigned int, 3> GetTriangle(unsigned int) const;
 
     void Draw() const;
     void DrawPoints() const;
     void DrawLines() const;
+    void DrawNormals() const;
+    void DrawDistances() const;
+
+    void Normalize();
+
+    void Translate(double, double, double);
+    void RotateX(double);
+    void RotateY(double);
+    void RotateZ(double);
+    void Scale(double, double, double);
+
+    Box GetBox() const;
+    void Reposition(const Box&);
 
     unsigned int    AddPoint(const Point&);
     void            RemovePoint(unsigned int);
@@ -40,7 +56,7 @@ public:
     unsigned int    AddAreteSafe(unsigned int, unsigned int);
     void            RemoveArete(unsigned int);
 
-    unsigned int    AddTriangle(unsigned int, unsigned int, unsigned int);
+    unsigned int    AddTriangle(unsigned int, unsigned int, unsigned int, bool = true);
     unsigned int    AddTriangleSafe(unsigned int, unsigned int, unsigned int);
     void            RemoveTriangle(unsigned int);
 
@@ -63,6 +79,11 @@ public:
     bool Correct() const;
     bool Closed() const;
     bool FreePoint() const;
+
+    double GetDistance(const Point&) const;
+    double GetDistance(const Point&, unsigned int) const;
+    void CalculateDistance(const DynamicMesh&);
+    void CalculateDistanceByOctree(DynamicMesh&);
 
 };
 

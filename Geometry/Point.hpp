@@ -19,6 +19,8 @@ public:
     Point GetProjection(const Droite&) const;
     Point GetProjection(const Plan&) const;
 
+    double GetDistance(const Point&) const;
+
     Point GetMiddle(const Point&) const;
 
     void Draw() const;

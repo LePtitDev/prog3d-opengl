@@ -50,6 +50,7 @@ set(SOURCE_FILES main.hpp main.cpp
         Shapes/Ball.hpp Shapes/Ball.cpp
         Shapes/Voxel.hpp Shapes/Voxel.cpp
         Shapes/Volume.hpp Shapes/Volume.cpp
+        Shapes/OctreePoint.hpp Shapes/OctreePoint.cpp
         Shapes/Grille.hpp Shapes/Grille.cpp
         Shapes/Mesh.hpp Shapes/Mesh.cpp
         Shapes/DynamicMesh.hpp Shapes/DynamicMesh.cpp
@@ -80,7 +81,8 @@ set(SOURCE_FILES main.hpp main.cpp
         Exercices/TP6.hpp Exercices/TP6.cpp
         Exercices/TP7.hpp Exercices/TP7.cpp
         Exercices/TP8.hpp Exercices/TP8.cpp
-        Exercices/TP9.hpp Exercices/TP9.cpp)
+        Exercices/TP9.hpp Exercices/TP9.cpp
+        Exercices/TP10.hpp Exercices/TP10.cpp)
 
 add_executable(Prog3D ${SOURCE_FILES})
 

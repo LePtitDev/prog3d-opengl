@@ -8,18 +8,19 @@
 
 class FileOFF {
 
-    Mesh mesh;
+    std::vector<Point> P;
+    std::vector<std::array<unsigned int, 3>> T;
 
 public:
 
     FileOFF();
-    FileOFF(DynamicMesh&);
     FileOFF(const char *);
 
     void Load(const char *);
     void Save(const char *);
 
-    const Mesh& GetMesh() const;
+    Mesh GetMesh() const;
+    DynamicMesh GetDynamicMesh() const;
 
 };
 

@@ -34,6 +34,11 @@ Point Point::GetProjection(const Plan & P) const {
     return Point(this->x - vp2.x * norm, this->y - vp2.y * norm, this->z - vp2.z * norm);
 }
 
+double Point::GetDistance(const Point& p) const {
+    double dx = this->x - p.x, dy = this->y - p.y, dz = this->z - p.z;
+    return sqrt(dx * dx + dy * dy + dz * dz);
+}
+
 Point Point::GetMiddle(const Point & p) const {
     return Point((this->x + p.x) / 2, (this->y + p.y) / 2, (this->z + p.z) / 2);
 }
