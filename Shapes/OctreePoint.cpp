@@ -107,5 +107,5 @@ double OctreePoint::GetDistance(const Point& p, bool first, unsigned int * idx) 
 }
 
 bool OctreePoint::Intersect(const Point& center, double radius) const {
-    return (center.GetDistance(this->vox.p) <= radius + this->vox.l / 2);
+    return (center.GetDistance(this->vox.p) <= radius + sqrt(2) * this->vox.l / 2);
 }
