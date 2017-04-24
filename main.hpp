@@ -58,9 +58,11 @@ class Camera;
 #include "Shapes/Grille.hpp"
 #include "Shapes/Mesh.hpp"
 #include "Shapes/DynamicMesh.hpp"
+#include "Shapes/House.hpp"
 
 //FILES
 #include "Files/OFF.hpp"
+#include "Files/IMGLoader.hpp"
 
 //SCENE
 #include "Raycaster.hpp"
@@ -93,6 +95,7 @@ class Camera;
 #include "Exercices/TP8.hpp"
 #include "Exercices/TP9.hpp"
 #include "Exercices/TP10.hpp"
+#include "Exercices/TP11.hpp"
 
 //ROOT
 #include "Fenetre.hpp"

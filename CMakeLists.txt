@@ -54,8 +54,11 @@ set(SOURCE_FILES main.hpp main.cpp
         Shapes/Grille.hpp Shapes/Grille.cpp
         Shapes/Mesh.hpp Shapes/Mesh.cpp
         Shapes/DynamicMesh.hpp Shapes/DynamicMesh.cpp
+        Shapes/House.hpp Shapes/House.cpp
 
         Files/OFF.hpp Files/OFF.cpp
+        Files/stb_image.h Files/stb_image_write.h
+        Files/IMGLoader.hpp Files/IMGLoader.cpp
 
         Raycaster.hpp Raycaster.cpp
         Lumiere.hpp Lumiere.cpp
@@ -82,7 +85,8 @@ set(SOURCE_FILES main.hpp main.cpp
         Exercices/TP7.hpp Exercices/TP7.cpp
         Exercices/TP8.hpp Exercices/TP8.cpp
         Exercices/TP9.hpp Exercices/TP9.cpp
-        Exercices/TP10.hpp Exercices/TP10.cpp)
+        Exercices/TP10.hpp Exercices/TP10.cpp
+        Exercices/TP11.hpp Exercices/TP11.cpp)
 
 add_executable(Prog3D ${SOURCE_FILES})
 

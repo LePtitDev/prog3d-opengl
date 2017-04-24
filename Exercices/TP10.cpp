@@ -11,8 +11,10 @@ TP10Exo1::TP10Exo1() :
     this->mesh1.Reposition(Box(Point(-3, -3, -3), Vecteur(6, 6, 6), Vecteur(6, 6, 6), Vecteur(6, 6, 6)));
 
     this->mesh2 = this->mesh1;
-    this->mesh2.SubdivideByButterfly();
-    this->mesh2.SubdivideByButterfly();
+    Grille3D grille(Point(-3, -3, -3), Vecteur(1, 1, 1), 6);
+    this->mesh2.Merge(grille);
+    //this->mesh2.SubdivideByButterfly();
+    //this->mesh2.SubdivideByButterfly();
     this->mesh1.Normalize();
     this->mesh2.Normalize();
 
